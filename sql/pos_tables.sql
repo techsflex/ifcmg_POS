@@ -39,7 +39,8 @@ DROP TABLE IF EXISTS `posversion`;
 CREATE TABLE IF NOT EXISTS `posversion` (
   `posID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `poscaption` VARCHAR(10) NOT NULL,
-  PRIMARY KEY (`posID`)
+  PRIMARY KEY (`posID`),
+  UNIQUE KEY `poscaption` (`poscaption`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table `posversion`
@@ -129,7 +130,6 @@ CREATE TABLE IF NOT EXISTS `cat` (
   `catname` VARCHAR(45) DEFAULT NULL,
   `company_companyID` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`catID`),
-  UNIQUE KEY `catname` (`catname`),
 
   CONSTRAINT `fk_cat_company1`
     FOREIGN KEY (`company_companyID`) REFERENCES `company` (`companyID`)
@@ -182,8 +182,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `orderID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `paymentID` VARCHAR(5) NOT NULL,
   `ordertype` VARCHAR(9) NOT NULL,
-  `date` DATETIME NOT NULL DEFAULT CURRENT_DATE,
-  `time` DATETIME NOT NULL DEFAULT CURRENT_TIME,
+  `datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `subtotal` FLOAT NOT NULL,
   `taxrate` FLOAT NOT NULL,
   `discount` FLOAT NOT NULL DEFAULT 0,
@@ -205,14 +204,13 @@ CREATE TABLE IF NOT EXISTS `orders` (
 CREATE TABLE IF NOT EXISTS `held` (
   `heldID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `ordertype` VARCHAR(9) NOT NULL,
-  `date` DATETIME NOT NULL DEFAULT CURRENT_DATE,
-  `time` DATETIME NOT NULL DEFAULT CURRENT_TIME,
+  `datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `subtotal` FLOAT NOT NULL,
   `taxrate` FLOAT NOT NULL,
   `discount` FLOAT NOT NULL DEFAULT 0,
   `grandtotal` FLOAT NOT NULL,
   `breakdown` VARCHAR(10000) NOT NULL,
-  `kitchenstatus` INT NOT NULL,
+  `kitchenstatus` INT NOT NULL DEFAULT 0,
   `company_companyID` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`heldID`),
   CONSTRAINT `fk_held_company1`
@@ -227,11 +225,9 @@ CREATE TABLE IF NOT EXISTS `held` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tillamount` (
   `tillID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `tillopendate` DATETIME NOT NULL DEFAULT CURRENT_DATE,
-  `tillopentime` DATETIME NOT NULL DEFAULT CURRENT_TIME,
+  `tillopendate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `tillopencash` INT NOT NULL,
   `tillclosedate` DATETIME NULL,
-  `tillclosetime` DATETIME NULL,
   `tillclosecash` INT NULL,
   `tillcashout` INT NULL,
   `company_companyID` INT UNSIGNED NOT NULL,
@@ -252,7 +248,6 @@ CREATE TABLE IF NOT EXISTS `server` (
   `servername` VARCHAR(45) DEFAULT NULL,
   `company_companyID` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`serverID`),
-  UNIQUE KEY `servername` (`servername`),
 
   CONSTRAINT `fk_server_company1`
     FOREIGN KEY (`company_companyID`) REFERENCES `company` (`companyID`)
