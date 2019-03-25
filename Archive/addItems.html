@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+<link href="./css/bootstrap.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+    form{
+        margin: 20px 0;
+    }
+    form input, button{
+        padding: 5px;
+    }
+    table{
+        width: 100%;
+        margin-bottom: 20px;
+		border-collapse: collapse;
+    }
+    table, th, td{
+        border: 1px solid #cdcdcd;
+    }
+    table th, table td{
+        padding: 10px;
+        text-align: left;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+ 
+			
+		
+         $(document).ready(function(){
+        $(".add-row").click(function(){
+            var name = $("#name").val();
+            var email = $("#email").val();
+
+						
+		
+			
+			//Check if id exists!
+			  if(document.getElementById(name)){
+				//  alert("IT EXISTS");
+				  
+				  //Just updating name for now
+				  var cell = document.getElementById(name).cells[1];
+				  
+				  cell.innerHTML= parseInt(cell.innerHTML,10) + 1;
+			  }
+			
+			else{
+            var markup = "<tr id='"+name+"'><td><input type='checkbox' name='record' ></td><td>" + name + "</td><td>" + email + "</td></tr>";
+            $("table tbody").append(markup);
+			}
+			
+			
+		
+        });
+        
+        // Find and remove selected table rows
+        $(".delete-row").click(function(){
+							
+        $("table tbody").find('input[name="record"]').each(function(){
+								
+            	if($(this).is(":checked")){
+                    $(this).parents("tr").remove();
+				}
+            });
+        }); 
+    });  
+	
+	
+	
+	//Toggle checkboxes
+function toggle(source) {
+  checkboxes = document.getElementsByName('record');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+	
+	
+</script>
+
+
+</head>
+
+<body>
+
+
+
+
+
+    <form>
+        <input type="text" id="name" placeholder="Name">
+        <input type="text" id="email" placeholder="Email Address">
+    	<input type="button" class="add-row" value="Add Row">
+    </form>
+    
+    <input type="checkbox" onClick="toggle(this)" /> Toggle All<br/>
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="45">
+                <td><input type="checkbox" name="record"></td>
+                <td>Peter Parker</td>
+                <td>peterparker@mail.com</td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" class="delete-row">Delete Row</button>
+
+</body>
+
+</html>

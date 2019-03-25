@@ -1,0 +1,153 @@
+.button{
+  display: inline-block;
+  zoom: 1;
+  padding: 6px 20px;
+  margin-bottom: 15px;
+
+  cursor: pointer;
+  border: 1px solid #bbb;
+	   white-space: normal;
+ 
+ font-size: 14px;
+   vertical-align: middle;
+ 
+  color: #555;
+  background-color: #ddd;
+  background-image: linear-gradient(top, rgba(255,255,255,1),
+                                         rgba(255,255,255,0)),
+                    url(data:image/png;base64,iVBORw0KGg[...]QmCC); 
+  transition: background-color .2s ease-out;
+  background-clip: padding-box; /* Fix bleeding */
+  border-radius: 4px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .3),
+              0 2px 2px -1px rgba(0, 0, 0, .5),
+              0 1px 0 rgba(255, 255, 255, .3) inset;
+  text-shadow: 0 1px 0 rgba(255,255,255, .9); 
+	
+	
+	
+  overflow: hidden;
+  text-overflow: ellipsis;
+ 
+}
+
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+	
+body {
+ 
+
+  
+  text-align: left;
+  color: #666;
+}
+	
+
+.btn.btn-default.filter-button{
+	background-color: #B4D6DF;
+}
+
+.btn.btn-default.filter-button:active{
+	
+}
+
+.items{
+    width: 150px;
+	height: 150px;
+    display: inline-block;
+}
+
+.button:hover{
+  background-color: #eee;
+  color: #555;
+}
+
+.button:active{
+  background: #e9e9e9;
+  position: relative;
+  top: 1px;
+  text-shadow: none;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .3) inset;
+}
+
+
+.button.color{
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0,0,0,.2);
+  background-image: linear-gradient(top, rgba(255,255,255,.3), 
+             rgba(255,255,255,0)),
+                    url(data:image/png;base64,iVBORw0KGg[...]QmCC);
+}
+
+/* */
+
+.button.green{
+  background-color: #57a957;
+  border-color: #57a957;
+}
+
+.button.green:hover{
+  background-color: #62c462;
+}
+
+.button.green:active{
+  background: #57a957;
+}
+
+/* */
+
+.button.red{
+  background-color: #c43c35;
+  border-color: #c43c35;
+}
+
+.button.red:hover{
+  background-color: #ee5f5b;
+}
+
+.button.red:active{
+  background: #c43c35;
+}
+
+/* */
+
+.button.dark-blue{
+  	background-color: #0A7E84;
+  border-color: #269CE9;
+}
+
+.button.dark-blue:hover{
+  background-color: #0DABB3;
+}
+
+.button.dark-blue:active{
+  background: #269CE9;
+}
+
+    form{
+        margin: 20px 0;
+    }
+    form input, button{
+        padding: 5px;
+    }
+    table{
+        width: 100%;
+        margin-bottom: 20px;
+		border-collapse: collapse;
+    }
+    table, th, td{
+        border: 1px solid #cdcdcd;
+    }
+    table th, table td{
+        padding: 10px;
+        text-align: left;
+    }

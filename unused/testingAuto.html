@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+
+<head>
+<link rel="stylesheet" href="./css/jquery-ui.css">
+<script src="./js/jquery-1.10.2.js"></script>
+<script src="./js/jquery-ui.js"></script>
+<script>
+$(function() {
+    $( "#studentName" ).autocomplete({
+        source: 'cat_name_autocomplete.php',
+  });			
+});	
+</script>
+
+</head>
+
+<body>
+    <div >
+
+        <form>
+            <input name="studentName" type="text" required id="studentName" autocomplete="off" size="45" class="ui-autocomplete-input">
+        </form>
+    </div>
+</body>
+
+</html>

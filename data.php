@@ -1,0 +1,203 @@
+<?php
+// Database details
+include 'config.php';
+
+$db_server   = $DB_HOST;
+$db_username = $DB_USER;
+$db_password = $DB_PASSWORD;
+$db_name     = $DB_NAME;
+
+// Get job (and id)
+$job = '';
+$id  = '';
+if (isset($_GET['job'])){
+  $job = $_GET['job'];
+  if ($job == 'get_products' ||
+      $job == 'get_product'   ||
+      $job == 'add_product'   ||
+      $job == 'edit_product'  ||
+      $job == 'delete_product'){
+    if (isset($_GET['id'])){
+      $id = $_GET['id'];
+	  
+		
+		
+		
+      if (!is_numeric($id)){
+        $id = '';
+      }
+    }
+  } else {
+    $job = '';
+  }
+}
+
+// Prepare array
+$mysql_data = array();
+
+// Valid job found
+if ($job != ''){
+  
+  // Connect to database
+  $db_connection = $conn;
+  if ($conn->connect_error){
+    $result  = 'error';
+    $message = 'Failed to connect to database: ' . mysqli_connect_error();
+    $job     = '';
+  }
+  
+  // Execute job
+  if ($job == 'get_products'){
+    
+    // Get companies
+    $query = "SELECT * FROM `products_table` INNER JOIN `categories_table` ON products_table.category=categories_table.cat_id ORDER BY product_id";
+    $query = mysqli_query($db_connection, $query);
+    if (!$query){
+      $result  = 'error';
+      $message = 'query error';
+    } else {
+      $result  = 'success';
+      $message = 'query success';
+      while ($company = mysqli_fetch_array($query)){
+        $functions  = '<div class="function_buttons"><ul>';
+        $functions .= '<li class="function_edit"><a data-id="'   . $company['table_id'] . '" data-name="' . $company['product_name'] . '"><span>Edit</span></a></li>';
+        $functions .= '<li class="function_delete_product"><a data-id="' . $company['table_id'] . '" data-name="' . $company['product_name'] . '"><span>Delete</span></a></li>';
+        $functions .= '</ul></div>';
+		
+		
+		  
+		  
+		  
+		  
+        $mysql_data[] = array(
+          "product_id"          => $company['product_id'],
+          "product_name"  => $company['product_name'],
+          "product_price"    => $company['product_price'],
+          "description"       =>  $company['description'],
+		      "category" => $company['cat_name'],		
+          "functions"     => $functions
+        );
+      }
+    }
+    
+  } elseif ($job == 'get_product'){
+    
+    // Get product
+    if ($id == ''){
+      $result  = 'error';
+      $message = 'id missing';
+    } else {
+      $query = "SELECT * FROM `products_table` INNER JOIN `categories_table` ON products_table.category=categories_table.cat_id WHERE table_id = '" . mysqli_real_escape_string($db_connection, $id) . "'";
+      $query = mysqli_query($db_connection, $query);
+      if (!$query){
+        $result  = 'error';
+        $message = 'query error';
+      } else {
+        $result  = 'success';
+        $message = 'query success';
+        while ($company = mysqli_fetch_array($query)){
+          $mysql_data[] = array(
+            "product_id"          => $company['product_id'],
+            "product_name"  => $company['product_name'],
+            "product_price"    => $company['product_price'],
+			      "category" => $company['cat_name'],	
+            "description"       => $company['description'],
+
+          );
+        }
+      }
+    }
+  
+  } elseif ($job == 'add_product'){
+    
+	  
+	$product_id_ap = "N/A";
+	$product_name_ap = "N/A";
+	$product_price_ap = 0.00;
+	$product_cat_ap = 1;
+	$product_desc_ap = "N/A";
+	  
+	 if (isset($_GET['product_id']))         { $product_id_ap = mysqli_real_escape_string($db_connection, $_GET['product_id']); }
+	 if (isset($_GET['product_name'])) 		 { $product_name_ap = mysqli_real_escape_string($db_connection, $_GET['product_name']) ; }
+	 if (isset($_GET['product_price']))      { $product_price_ap = mysqli_real_escape_string($db_connection, $_GET['product_price']) ; }
+	 if (isset($_GET['cat_name2']))  		 {$product_cat_ap = mysqli_real_escape_string($db_connection, $_GET['cat_name2']); }
+	 if (isset($_GET['description']))  		 {$product_desc_ap = mysqli_real_escape_string($db_connection, $_GET['description']); }
+		
+    $query = "INSERT INTO `products_table`( `product_id`, `product_name`, `product_price`, `category`, `description`) VALUES ('".$product_id_ap."','".$product_name_ap."','".$product_price_ap."','".$product_cat_ap."','".$product_desc_ap."')";
+    
+	
+    $query = mysqli_query($db_connection, $query);
+    if (!$query){
+      $result  = "error: ".$query;
+      $message = 'query error';
+    } else {
+      $result  = 'success';
+      $message = 'query success';
+    }
+  
+  } elseif ($job == 'edit_product'){
+ 
+    // Edit product
+    if ($id == ''){
+      $result  = 'error';
+      $message = 'id missing';
+    } else {
+      $query = "UPDATE products_table SET ";
+      if (isset($_GET['product_id']))         { $query .= "product_id         = '" . mysqli_real_escape_string($db_connection, $_GET['product_id'])         . "', "; }
+      if (isset($_GET['product_name'])) { $query .= "product_name = '" . mysqli_real_escape_string($db_connection, $_GET['product_name']) . "', "; }
+      if (isset($_GET['product_price']))   { $query .= "product_price   = '" . mysqli_real_escape_string($db_connection, $_GET['product_price'])   . "', "; }
+      if (isset($_GET['cat_name2']))   { $query .= "category   = '" . mysqli_real_escape_string($db_connection, $_GET['cat_name2'])   . "', "; }
+      if (isset($_GET['description']))      { $query .= "description      = '" . mysqli_real_escape_string($db_connection, $_GET['description'])      . "' "; }
+  
+		
+      $query .= "WHERE table_id = '" . mysqli_real_escape_string($db_connection, $id) . "'";
+		
+       $queryString  = $query; 
+      $query  = mysqli_query($db_connection, $query);
+      if (!$query){
+        $result  = 'error';
+        $message = $queryString;
+      } else {
+        $result  = 'success';
+       // $message = $queryString;
+		  $message ='Updated Successful!';
+      }
+    }
+    
+  } elseif ($job == 'delete_product'){
+  
+    // Delete product
+    if ($id == ''){
+      $result  = 'error';
+      $message = 'id missing';
+    } else {
+      $query = "DELETE FROM products_table WHERE table_id = '" . mysqli_real_escape_string($db_connection, $id) . "'";
+	$queryString = $query;
+      $query = mysqli_query($db_connection, $query);
+      if (!$query){
+        $result  = 'error';
+        $message = 'query error';
+      } else {
+        $result  = 'success';
+        $message = 'query successful';
+      }
+    }
+  
+  }
+  
+  // Close database connection
+  mysqli_close($db_connection);
+
+}
+
+// Prepare data
+$data = array(
+  "result"  => $result,
+  "message" => $message,
+  "data"    => $mysql_data
+);
+
+// Convert PHP array to JSON array
+$json_data = json_encode($data);
+print $json_data;
+?>
