@@ -67,7 +67,8 @@
 	
 	<script>
 		$(document).ready(function(){
-			$("#tillOperation").click(function(){
+			$("#tillOperation").on('click', function(e){
+				e.preventDefault();
 				//alert(typeof this.value);
 				var message = null;
 				var amount = null;
@@ -99,15 +100,20 @@
 						type: "POST",
 						data: {
 								tillProcess: this.value,
-								tillBalance: amount
-							  },
-						success: function(queryMessage){
-							alert(queryMessage);
-						}
+								tillBalance: amount,
+							  }//,
+						//success: function(queryMessage){
+							//alert(queryMessage);
+						//}
+					}).done(function(queryMessage){
+						alert(queryMessage);
+						location.reload(true);
+					}).fail(function(queryMessage){
+						alert("Call to server failed!");
 					});
 					//alert("AJAX Query Complete");
 				}
-				location.reload(true);
+				//location.reload(true);
 			});
 		});
 	</script>
@@ -155,7 +161,7 @@
 			
 			<?php
 				include "config.php";
-				$query = "SELECT COUNT(*) FROM `tillamount`"; #checks count of rows in table
+				$query = "SELECT COUNT(*) FROM `tillamount` WHERE company_companyID='$companyID'"; #checks count of rows in table
 				$result = $conn->query($query);
 				$row = $result->fetch_array();
 				if ((int)$row[0] === 0) {
@@ -163,16 +169,17 @@
 				}
 					
 				else {
-					$query = "SELECT * FROM `tillamount` ORDER BY `tillID` DESC LIMIT 1";
+					$query = "SELECT * FROM `tillamount` WHERE company_companyID='$companyID' ORDER BY `tillID` DESC LIMIT 1";
 					$result = $conn->query($query);
 					$row = $result->fetch_array();
-					if (is_null($row['till_close_cash'])) {
+					if (is_null($row['tillclosecash'])) {
 						echo '<li><button type="button" class="btn btn-block btn-warning" id="tillOperation" value="6">Day Close</button></li>';
 					}
 					else {
 						echo '<li><button type="button" class="btn btn-block btn-success" id="tillOperation" value="5">Day Open</button></li>';
 					}
 				}
+				$conn->close();
 			?>
 			
 			<br>
