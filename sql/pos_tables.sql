@@ -38,7 +38,7 @@ INSERT INTO `status` (`statusID`, `statuscaption`) VALUES
 DROP TABLE IF EXISTS `posversion`;
 CREATE TABLE IF NOT EXISTS `posversion` (
   `posID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `poscaption` VARCHAR(10) NOT NULL,
+  `poscaption` VARCHAR(13) NOT NULL,
   PRIMARY KEY (`posID`),
   UNIQUE KEY `poscaption` (`poscaption`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS `posversion` (
 
 INSERT INTO `posversion` (`posID`, `poscaption`) VALUES
 (1, 'Disabled'),
-(2, 'Basic PoS'),
-(3, 'Full PoS');
+(2, 'Basic Version'),
+(3, 'Full Version');
 
 -- -----------------------------------------------------
 -- Table `company`

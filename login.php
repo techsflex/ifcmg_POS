@@ -8,7 +8,7 @@ $result = $conn->query("SELECT * FROM login WHERE username='$username'");
 
 if ( $result->num_rows == 0 ){ // User doesn't exist
     $_SESSION['message'] = "Username does not exist!";
-	$conn->close;
+	$conn->close();
     header("location: error.php");
 }
 else { // User exists
@@ -26,21 +26,21 @@ else { // User exists
         if ( $_SESSION['status'] === '1') {
             $_SESSION['logged_in'] = false;
             $_SESSION['message'] = 'Your account is currently unverified, please contact administrator';
-			$conn->close;
+			$conn->close();
             header("location: error.php");
         }
 
         elseif ( $_SESSION['status'] === '2') {
             $_SESSION['logged_in'] = false;
             $_SESSION['message'] = 'Your account has temporarily been blocked, please contact administrator';
-			$conn->close;
+			$conn->close();
             header("location: error.php");
         }
 
         elseif ( $_SESSION['status'] === '3') {
             $_SESSION['logged_in'] = false;
             $_SESSION['message'] = 'The account you mentioned has been closed, please apply for a new registration';
-			$conn->close;
+			$conn->close();
             header("location: error.php");
         }
 
@@ -48,26 +48,22 @@ else { // User exists
         	$_SESSION['first_name'] = $user['first_name'];
         	$_SESSION['last_name'] = $user['last_name'];
 			$_SESSION['companyID'] = $user['company_companyID'];
-            //////////////////////////////////  Delete after trial run  ////////////////////////////////////////////
-            $_SESSION['logged_in'] = false;
-            $_SESSION['message'] = 'FILES MISSING! DNS Propagation not complete...';
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////
-			$conn->close;
-            header("location: error.php");
-            //header("location: home.php");
+            $_SESSION['statusID'] = $user['status_statusID'];
+			$conn->close();
+            header("location: home.php");
         }        
         
         else {
             $_SESSION['logged_in'] = false;
             $_SESSION['message'] = 'Invalid status has been defined against this username, please contact administrator';
-			$conn->close;
+			$conn->close();
             header("location: error.php");
         }
     }
 
     else {
         $_SESSION['message'] = "You have entered wrong password, try again!";
-		$conn->close;
+		$conn->close();
         header("location: error.php");
     }
 }

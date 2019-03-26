@@ -1,3 +1,38 @@
+<?php
+  /* Displays user information and some useful messages */
+  session_start();
+  // Check if user is logged in using the session variable
+  if (!$_SESSION['logged_in']) {
+      $_SESSION['message'] = "You must log in before viewing your profile page!";
+      header("location: error.php");    
+  }
+
+  else {
+  	include "config.php";
+    // Makes it easier to read
+    $first_name = $_SESSION['first_name'];
+    $last_name  = $_SESSION['last_name'];
+    $statusID   = (int)$_SESSION['statusID'];
+    $companyID  = (int)$_SESSION['companyID'];
+
+    $query = "SELECT posversion_posID FROM company WHERE companyID='$companyID'";	
+
+    if ($result = $conn->query($query)) {
+    	$row = $result->fetch_array();
+    	$posversion = (int)$row[0];
+    }
+    else {
+    	$posversion = 1;
+    }
+
+    $query = "SELECT poscaption FROM posversion WHERE posID='$posversion'";
+    $result = $conn->query($query);
+    $row = $result->fetch_array();
+    $pos = $row[0];
+    $conn->close();
+  }
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,7 +122,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span></button>
 				<a class="navbar-brand" href="#"><span>POS</span>APP</a>
-				<a class="navbar-right" href="#">Full Version&nbsp;&nbsp;</a>
+				<a class="navbar-right" href="#"><?php echo $pos; ?>&nbsp;&nbsp;</a>
 			</div>
 		</div><!-- /.container-fluid -->
 	</nav>
@@ -98,7 +133,7 @@
 				<img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt="">
 			</div>
 			<div class="profile-usertitle">
-				<div class="profile-usertitle-name">M. Ghazi</div>
+				<div class="profile-usertitle-name"><?php echo $first_name . ' ' . $last_name ?></div>
 				<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
 			</div>
 			<div class="clear"></div>
