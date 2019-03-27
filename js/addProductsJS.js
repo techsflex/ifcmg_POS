@@ -148,17 +148,8 @@ $(document).ready(function(){
       });
 
       request.done(function(output){
-        if (output.result == 'success'){
-          // Reload datable
-          table_products.api().ajax.reload(function(){
-            hide_loading_message();
-            var product_name = $('#product_name').val();
-            show_message("Product '" + product_name + "' added successfully.", 'success');
-          }, true);
-        } else {
-          hide_loading_message();
-          show_message(output.result, 'ERROR: Some field was left empty');
-        }
+        hide_loading_message();
+        show_message(output.message, output.result);
       });
       request.fail(function(jqXHR, textStatus){
         hide_loading_message();

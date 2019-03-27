@@ -114,37 +114,37 @@ if ($job != ''){
                           ('$product_id_ap', '$product_name_ap', '$product_price_ap', '$product_desc_ap', '$product_cat_ap')";
             $query=$conn->query($query);
             if (!$query){
-              $result  = "Error: Problem INSERTING product to Database";
-              $message = 'Query Error';
+              $result  = "error";
+              $message = 'Error: Problem INSERTING product to Database';
             } else {
-              $result  = 'Product "' . $product_name_ap . '" successfully created!';
-              $message = 'Query Success';
+              $result  = 'success';
+              $message = 'Product "' . $product_name_ap . '" successfully created!';
             }
           }
           else {
-            $result  = "Error: Product Category not set";
-            $message = 'Query Error';
+            $result  = "error";
+            $message = 'Error: Product Category not set';
           }
         }
         else {
-          $result  = "Error: Product Description not set";
-          $message = 'Query Error';
+          $result  = "error";
+          $message = 'Error: Product Description not set';
         }  
       }
 
       else {
-        $result  = "Error: Product Price not set";
-        $message = 'Query Error';
+        $result  = "error";
+        $message = 'Error: Product Price not set';
       }
     }
     else {
-      $result  = "Error: Product Name not set";
-      $message = 'Query Error';
+      $result  = "error";
+      $message = 'Error: Product Name not set';
     }
   }
   else {
-    $result  = "Error: ProductID not set";
-    $message = 'Query Error';
+    $result  = "error";
+    $message = 'Error: ProductID not set';
   }
   
   } elseif ($job == 'edit_product'){
