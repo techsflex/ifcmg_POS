@@ -130,8 +130,8 @@ $(document).ready(function(){
 
   // Add product submit form
   $(document).on('submit', '#form_product.add', function(e){
-	 e.preventDefault();
-     e.stopImmediatePropagation();
+    e.preventDefault();
+    e.stopImmediatePropagation();
     // Validate form
     if (form_product.valid() === true){
       // Send product information to database

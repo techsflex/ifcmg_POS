@@ -100,23 +100,52 @@ if ($job != ''){
 	$product_cat_ap = 1;
 	$product_desc_ap = "N/A";
 	  
-	 if (isset($_GET['product_id']))         { $product_id_ap = mysqli_real_escape_string($db_connection, $_GET['product_id']); }
-	 if (isset($_GET['product_name'])) 		 { $product_name_ap = mysqli_real_escape_string($db_connection, $_GET['product_name']) ; }
-	 if (isset($_GET['product_price']))      { $product_price_ap = mysqli_real_escape_string($db_connection, $_GET['product_price']) ; }
-	 if (isset($_GET['cat_name2']))  		 {$product_cat_ap = mysqli_real_escape_string($db_connection, $_GET['cat_name2']); }
-	 if (isset($_GET['description']))  		 {$product_desc_ap = mysqli_real_escape_string($db_connection, $_GET['description']); }
-		
-    $query = "INSERT INTO `products_table`( `product_id`, `product_name`, `product_price`, `category`, `description`) VALUES ('".$product_id_ap."','".$product_name_ap."','".$product_price_ap."','".$product_cat_ap."','".$product_desc_ap."')";
-    
-	
-    $query = mysqli_query($db_connection, $query);
-    if (!$query){
-      $result  = "error: ".$query;
-      $message = 'query error';
-    } else {
-      $result  = 'success';
-      $message = 'query success';
+	if (isset($_GET['product_id'])) {
+    $product_id_ap = $conn->real_escape_string($_GET['product_id']);
+    if (isset($_GET['product_name'])) {
+      $product_name_ap = $conn->real_escape_string($_GET['product_name']);
+      if (isset($_GET['product_price'])) {
+        $product_price_ap = $conn->real_escape_string($_GET['product_price']);
+        if (isset($_GET['description'])) {
+          $product_desc_ap = $conn->real_escape_string($_GET['description']);
+          if (isset($_GET['cat_name2'])) {
+            $product_cat_ap = (int)$conn->real_escape_string($_GET['cat_name2']);
+            $query = "INSERT INTO `products`( `productID`, `productname`, `productprice`, `description`, `cat_catID`) VALUES 
+                          ('$product_id_ap', '$product_name_ap', '$product_price_ap', '$product_desc_ap', '$product_cat_ap')";
+            $query=$conn->query($query);
+            if (!$query){
+              $result  = "Error: Problem INSERTING product to Database";
+              $message = 'Query Error';
+            } else {
+              $result  = 'Product "' . $product_name_ap . '" successfully created!';
+              $message = 'Query Success';
+            }
+          }
+          else {
+            $result  = "Error: Product Category not set";
+            $message = 'Query Error';
+          }
+        }
+        else {
+          $result  = "Error: Product Description not set";
+          $message = 'Query Error';
+        }  
+      }
+
+      else {
+        $result  = "Error: Product Price not set";
+        $message = 'Query Error';
+      }
     }
+    else {
+      $result  = "Error: Product Name not set";
+      $message = 'Query Error';
+    }
+  }
+  else {
+    $result  = "Error: ProductID not set";
+    $message = 'Query Error';
+  }
   
   } elseif ($job == 'edit_product'){
  
