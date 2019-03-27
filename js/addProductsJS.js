@@ -2,8 +2,6 @@ $(document).ready(function(){
 
   // On page load: datatable
   var table_products = $('#table_products').dataTable({
-    "processing":true,
-    "serverSide":true,
     "ajax": "data.php?job=get_products",
     "columns": [
                 { data: "product_id" },
