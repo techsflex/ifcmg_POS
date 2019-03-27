@@ -1,15 +1,14 @@
 <?php
 // Database details
+session_start();
 include 'config.php';
 
-$db_server   = $DB_HOST;
-$db_username = $DB_USER;
-$db_password = $DB_PASSWORD;
-$db_name     = $DB_NAME;
+$first_name = $_SESSION['first_name'];
+$last_name  = $_SESSION['last_name'];
+$statusID   = (int)$_SESSION['statusID'];
+$companyID  = (int)$_SESSION['companyID'];
 
 // Get job (and id)
-$job = '';
-$id  = '';
 if (isset($_GET['job'])){
   $job = $_GET['job'];
   if ($job == 'get_products' ||
@@ -19,13 +18,12 @@ if (isset($_GET['job'])){
       $job == 'delete_product'){
     if (isset($_GET['id'])){
       $id = $_GET['id'];
-	  
-		
-		
-		
       if (!is_numeric($id)){
         $id = '';
       }
+    }
+    else {
+      $id = '';
     }
   } else {
     $job = '';
@@ -37,21 +35,11 @@ $mysql_data = array();
 
 // Valid job found
 if ($job != ''){
-  
-  // Connect to database
-  $db_connection = $conn;
-  if ($conn->connect_error){
-    $result  = 'error';
-    $message = 'Failed to connect to database: ' . mysqli_connect_error();
-    $job     = '';
-  }
-  
   // Execute job
   if ($job == 'get_products'){
-    
     // Get companies
-    $query = "SELECT * FROM `products_table` INNER JOIN `categories_table` ON products_table.category=categories_table.cat_id ORDER BY product_id";
-    $query = mysqli_query($db_connection, $query);
+    $query = "SELECT * FROM `products` INNER JOIN `cat` ON products.cat_catID=cat.catID WHERE company_companyID='$companyID' ORDER BY skuID";
+    $query = $conn->query($query);
     if (!$query){
       $result  = 'error';
       $message = 'query error';
@@ -60,21 +48,16 @@ if ($job != ''){
       $message = 'query success';
       while ($company = mysqli_fetch_array($query)){
         $functions  = '<div class="function_buttons"><ul>';
-        $functions .= '<li class="function_edit"><a data-id="'   . $company['table_id'] . '" data-name="' . $company['product_name'] . '"><span>Edit</span></a></li>';
-        $functions .= '<li class="function_delete_product"><a data-id="' . $company['table_id'] . '" data-name="' . $company['product_name'] . '"><span>Delete</span></a></li>';
+        $functions .= '<li class="function_edit"><a data-id="'   . $company['skuID'] . '" data-name="' . $company['productname'] . '"><span>Edit</span></a></li>';
+        $functions .= '<li class="function_delete_product"><a data-id="' . $company['skuID'] . '" data-name="' . $company['productname'] . '"><span>Delete</span></a></li>';
         $functions .= '</ul></div>';
 		
-		
-		  
-		  
-		  
-		  
         $mysql_data[] = array(
-          "product_id"          => $company['product_id'],
-          "product_name"  => $company['product_name'],
-          "product_price"    => $company['product_price'],
+          "product_id"          => $company['productID'],
+          "product_name"  => $company['productname'],
+          "product_price"    => $company['productprice'],
           "description"       =>  $company['description'],
-		      "category" => $company['cat_name'],		
+		      "category" => $company['catname'],		
           "functions"     => $functions
         );
       }
@@ -186,7 +169,7 @@ if ($job != ''){
   }
   
   // Close database connection
-  mysqli_close($db_connection);
+  $conn->close();
 
 }
 
@@ -199,5 +182,5 @@ $data = array(
 
 // Convert PHP array to JSON array
 $json_data = json_encode($data);
-print $json_data;
+echo $json_data;
 ?>

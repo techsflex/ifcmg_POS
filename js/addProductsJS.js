@@ -2,17 +2,16 @@ $(document).ready(function(){
 
   // On page load: datatable
   var table_products = $('#table_products').dataTable({
-	  
-	  
-	 "ajax": "data.php?job=get_products",
+    "processing":true,
+    "serverSide":true,
+    "ajax": "data.php?job=get_products",
     "columns": [
-      { "data": "product_id" },
-      { "data": "product_name",   "sClass": "product_name" },
-      { "data": "product_price" },
-  	  { "data": "category" },
-		
-      { "data": "description"        },      
-      { "data": "functions",      "sClass": "functions" }
+                { data: "product_id" },
+                { data: "product_name" },
+                { data: "product_price" },
+                { data: "category" },
+                { data: "description" },      
+                { data: "functions" }
     ],
     "aoColumnDefs": [
       { "bSortable": false, "aTargets": [-1] }

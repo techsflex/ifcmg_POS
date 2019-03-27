@@ -151,10 +151,9 @@
 			</div>
 		</form>
 		<ul class="nav menu">
-			<li class="active" id="dashboard"><a href="index.php"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
+			<li class="active" id="dashboard"><a href="home.php"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
 			<li onClick="loadPage(this)"  id="new_order" value="2" ><a ><em class="fa fa-plus-square">&nbsp;</em> New Order</a></li>
 			<li onClick="loadPage(this)"  id="add_products" value="1"  ><a ><em class="fa fa-bars">&nbsp;</em> All Products</a></li>
-
 			<li onClick="loadPage(this)"  id="order_log" value="3" ><a ><em class="fa fa-file">&nbsp;</em> Order Log</a></li>
 			<li onClick="loadPage(this)"  id="hold_order_log" value="4" ><a ><em class="fa fa-clock-o">&nbsp;</em> Hold Order Log</a></li>
 			<br><br>
@@ -299,7 +298,7 @@
 				</div>
 			</div>
 			<div class="col-sm-12">
-				<p class="back-link">A Product of <a href="https://www.techsflex.net">Techsflex</a></p>
+				<p class="back-link">Designed and developed by <a href="https://www.techsflex.net">Techsflex</a></p>
 			</div>
 		</div><!--/.row-->
 				</div>
