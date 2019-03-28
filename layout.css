@@ -353,7 +353,9 @@ table.datatable tbody td.functions .function_buttons li.function_delete {
 table.datatable tbody td.functions .function_buttons li.function_delete_product {
   padding: 0;
 }
-
+table.datatable tbody td.functions .function_buttons li.function_view_product {
+  padding: 0;
+}
 table.datatable tbody td.functions .function_buttons li.function_delete_hold_order {
   padding: 0;
 }
@@ -390,6 +392,12 @@ table.datatable tbody td.functions .function_buttons .function_hold_order_edit a
 table.datatable tbody td.functions .function_buttons .function_edit a:before {
   font-size: 1.1rem;
   content: "\f040";
+}
+
+table.datatable tbody td.functions .function_buttons .function_view_product a:before {
+  font-size: 1.2rem;
+  line-height: 30px;
+  content: "\f1da";
 }
 
 table.datatable tbody td.functions .function_buttons .function_delete_product a:before {

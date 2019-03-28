@@ -270,4 +270,43 @@ $(document).ready(function(){
     }
   });
 
+  // Delete product
+  $(document).on('click', '.function_edit_product a', function(e){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    
+    var urlVal='data.php?job=delete_product&id=';
+    var product_name = $(this).data('name');
+    
+    if (confirm("Are you sure you want to delete '" + product_name + "'?")){
+      //show_loading_message();
+      var id      = $(this).data('id');
+      var request = $.ajax({
+        url:          urlVal + id,
+        cache:        false,
+        dataType:     'json',
+        contentType:  'application/json; charset=utf-8',
+        type:         'get'
+      });
+      request.done(function(output){
+        if (output.result === 'success'){
+          // Reload datable
+      
+         table_products.api().ajax.reload(function(){
+              //hide_loading_message();
+              show_message("Product '" + product_name + "' deleted successfully.", 'success');
+              }, true); 
+            
+       } else {
+          hide_loading_message();
+          show_message('Delete request failed', 'error');
+        }
+      });
+      request.fail(function(jqXHR, textStatus){
+        hide_loading_message();
+        show_message('Delete request failed: ' + textStatus, 'error');
+      });
+    }
+  });
+
 });// JavaScript Document
