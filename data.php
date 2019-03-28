@@ -160,7 +160,7 @@ if ($job != ''){
       $productID    = $conn->real_escape_string($_GET['product_id']);
       $productname  = $conn->real_escape_string($_GET['product_name']);
       $productprice = $conn->real_escape_string($_GET['product_price']);
-      $catID        = $conn->real_escape_string($_GET['cat_name2']);
+      $catID        = (int)$conn->real_escape_string($_GET['cat_name2']);
       $description  = $conn->real_escape_string($_GET['description']);
 
       
@@ -174,61 +174,81 @@ if ($job != ''){
       $query =  "UPDATE products SET productID='$productID', ";
       $query .= "productname='$productname', productprice='$productprice', ";
       $query .= "description='$description', cat_catID='$catID'";
-
       $query .= "WHERE skuID='$skuID'";
+
       $query = $conn->query($query);
       if (!$query){
         $result  = 'error';
-        $message = "Unable to update table entry due to SQL error or undefined Category!";
-      } else {
-        if ($prevprice != $productprice) {
-          /*$query = "SELECT COUNT(*) as cnt FROM `pricehist` WHERE `products_skuID`='$skuID'";
-          $query = $conn->query($query);
-          $row = $query->fetch_assoc();
+        $message = 'Unable to update table entry due to SQL error or undefined Category!';
+      } 
 
-          if ($row['cnt'] < 5){
-            $query =  "INSERT INTO `pricehist` (`created_by`, `price`, `products_skuID`) VALUES ";
-            $query .= "('$name', '$prevprice', '$skuID')";
-          }
-          else {
-            //Query to modify oldest value
-            //SELECT * FROM `pricehist` WHERE `products_skuID`='$skuID' ORDER BY date_modified DESC
-          }*/
-          $result  = 'success';
-          $message = 'Successfully update Product: ' . $productname;
+      else if ($prevprice != $productprice) {
+        $query = "SELECT count(*) as total FROM `pricehist` WHERE `products_skuID`='$skuID'";
+        $query = $conn->query($query);
+        $row = $query->fetch_assoc();
+          
+        if(!$query){
+          $result  = 'error';
+          $message = 'Successfully update Product: ' . $productname . ' - Error creating price history entry!';
         }
+
+        else if ($row['total'] < 5){
+          //Only add new record if records of price change don't go over 5
+          $query =  "INSERT INTO `pricehist` (`created_by`, `price`, `products_skuID`) VALUES ";
+          $query .= "('$name', '$prevprice', '$skuID')";
+          $query = $conn->query($query);
+          
+          $result  = 'success';
+          $message = 'Successfully update Product: ' . $productname;  
+        }
+        
         else {
+          //Modify oldest record when price change for product is exceeding 5
+          $query = "SELECT * FROM `pricehist` WHERE `products_skuID`='$skuID' ORDER BY date_modified ASC LIMIT 1";
+          $query = $conn->query($query);
+          
+          while ($row = $query->fetch_assoc()) {
+            $rowID = $row["priceID"];
+          }
+          $query =  "UPDATE pricehist SET date_modified=CURRENT_TIMESTAMP, ";
+          $query .= "created_by='$name', price='$prevprice' WHERE priceID='$rowID'";
+          $query = $conn->query($query);
+            
           $result  = 'success';
-          $message = 'Successfully update Product: ' . $productname;
+          $message = 'Successfully update Product: ' . $productname;     
         }
+      }
+      else {
+        $result  = 'success';
+        $message = 'Successfully update Product: ' . $productname;  
       }
     }
   } 
 
   elseif ($job == 'delete_product'){
-  
-    // Delete product
+  // Delete product
     if ($id == ''){
       $result  = 'error';
       $message = 'id missing';
-    } else {
-      $query = "DELETE FROM products_table WHERE table_id = '" . mysqli_real_escape_string($db_connection, $id) . "'";
-	$queryString = $query;
-      $query = mysqli_query($db_connection, $query);
+    } 
+
+    else {
+      $skuID = (int)$conn->real_escape_string($id);
+      $query = "DELETE FROM products WHERE skuID = '$skuID'";
+      $query = $conn->query($query);
+      
       if (!$query){
         $result  = 'error';
-        $message = 'query error';
+        $message = 'Unable to delete product due to Query Error';
       } else {
         $result  = 'success';
-        $message = 'query successful';
+        $message = 'Product successfully deleted!';
       }
     }
-  
   }
   
   // Close database connection
   $conn->close();
-
 }
 
 // Prepare data
