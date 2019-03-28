@@ -3,8 +3,7 @@
 session_start();
 include 'config.php';
 
-$first_name = $_SESSION['first_name'];
-$last_name  = $_SESSION['last_name'];
+$name = $_SESSION['first_name'] . ' ' . $_SESSION['last_name'];
 $statusID   = (int)$_SESSION['statusID'];
 $companyID  = (int)$_SESSION['companyID'];
 
@@ -70,113 +69,143 @@ if ($job != ''){
       $result  = 'error';
       $message = 'id missing';
     } else {
-      $query = "SELECT * FROM `products_table` INNER JOIN `categories_table` ON products_table.category=categories_table.cat_id WHERE table_id = '" . mysqli_real_escape_string($db_connection, $id) . "'";
-      $query = mysqli_query($db_connection, $query);
+      $prodID = (int)$conn->real_escape_string($id);
+      $query = "SELECT * FROM `products` INNER JOIN `cat` ON products.cat_catID=cat.catID WHERE skuID = '$prodID' AND company_companyID='$companyID'";
+      $query = $conn->query($query);
       if (!$query){
         $result  = 'error';
-        $message = 'query error';
+        $message = 'Connection Failed!';
       } else {
         $result  = 'success';
-        $message = 'query success';
-        while ($company = mysqli_fetch_array($query)){
+        $message = 'Found matching product!';
+        while ($company = $query->fetch_array()){
           $mysql_data[] = array(
-            "product_id"          => $company['product_id'],
-            "product_name"  => $company['product_name'],
-            "product_price"    => $company['product_price'],
-			      "category" => $company['cat_name'],	
-            "description"       => $company['description'],
-
+            "product_id"    => $company['productID'],
+            "product_name"  => $company['productname'],
+            "product_price" => $company['productprice'],
+			      "category"      => $company['catname'],	
+            "description"   => $company['description'],
           );
         }
       }
     }
-  
-  } elseif ($job == 'add_product'){
-    
+  } 
+
+  elseif ($job == 'add_product'){
+    $product_id_ap = "N/A";
+    $product_name_ap = "N/A";
+    $product_price_ap = 0.00;
+    $product_cat_ap = 1;
+    $product_desc_ap = "N/A";
 	  
-	$product_id_ap = "N/A";
-	$product_name_ap = "N/A";
-	$product_price_ap = 0.00;
-	$product_cat_ap = 1;
-	$product_desc_ap = "N/A";
-	  
-	if (isset($_GET['product_id'])) {
-    $product_id_ap = $conn->real_escape_string($_GET['product_id']);
-    if (isset($_GET['product_name'])) {
-      $product_name_ap = $conn->real_escape_string($_GET['product_name']);
-      if (isset($_GET['product_price'])) {
-        $product_price_ap = $conn->real_escape_string($_GET['product_price']);
-        if (isset($_GET['description'])) {
-          $product_desc_ap = $conn->real_escape_string($_GET['description']);
-          if (isset($_GET['cat_name2'])) {
-            $product_cat_ap = (int)$conn->real_escape_string($_GET['cat_name2']);
-            $query = "INSERT INTO `products`( `productID`, `productname`, `productprice`, `description`, `cat_catID`) VALUES 
-                          ('$product_id_ap', '$product_name_ap', '$product_price_ap', '$product_desc_ap', '$product_cat_ap')";
-            $query=$conn->query($query);
-            if (!$query){
+  	if (isset($_GET['product_id'])) {
+      $product_id_ap = $conn->real_escape_string($_GET['product_id']);
+      if (isset($_GET['product_name'])) {
+        $product_name_ap = $conn->real_escape_string($_GET['product_name']);
+        if (isset($_GET['product_price'])) {
+          $product_price_ap = $conn->real_escape_string($_GET['product_price']);
+          if (isset($_GET['description'])) {
+            $product_desc_ap = $conn->real_escape_string($_GET['description']);
+            if (isset($_GET['cat_name2'])) {
+              $product_cat_ap = (int)$conn->real_escape_string($_GET['cat_name2']);
+              $query = "INSERT INTO `products`( `productID`, `productname`, `productprice`, `description`, `cat_catID`) VALUES 
+                            ('$product_id_ap', '$product_name_ap', '$product_price_ap', '$product_desc_ap', '$product_cat_ap')";
+              $query=$conn->query($query);
+              if (!$query){
+                $result  = "error";
+                $message = 'Error: Problem INSERTING product to Database';
+              } 
+              else {
+                $result  = 'success';
+                $message = 'Product "' . $product_name_ap . '" successfully created!';
+              }
+            }
+            else {
               $result  = "error";
-              $message = 'Error: Problem INSERTING product to Database';
-            } else {
-              $result  = 'success';
-              $message = 'Product "' . $product_name_ap . '" successfully created!';
+              $message = 'Error: Product Category not set';
             }
           }
           else {
             $result  = "error";
-            $message = 'Error: Product Category not set';
-          }
+            $message = 'Error: Product Description not set';
+          }  
         }
+
         else {
           $result  = "error";
-          $message = 'Error: Product Description not set';
-        }  
+          $message = 'Error: Product Price not set';
+        }
       }
-
       else {
         $result  = "error";
-        $message = 'Error: Product Price not set';
+        $message = 'Error: Product Name not set';
       }
     }
     else {
       $result  = "error";
-      $message = 'Error: Product Name not set';
+      $message = 'Error: ProductID not set';
     }
-  }
-  else {
-    $result  = "error";
-    $message = 'Error: ProductID not set';
-  }
   
-  } elseif ($job == 'edit_product'){
- 
+  } 
+
+  elseif ($job == 'edit_product'){
     // Edit product
     if ($id == ''){
       $result  = 'error';
-      $message = 'id missing';
-    } else {
-      $query = "UPDATE products_table SET ";
-      if (isset($_GET['product_id']))         { $query .= "product_id         = '" . mysqli_real_escape_string($db_connection, $_GET['product_id'])         . "', "; }
-      if (isset($_GET['product_name'])) { $query .= "product_name = '" . mysqli_real_escape_string($db_connection, $_GET['product_name']) . "', "; }
-      if (isset($_GET['product_price']))   { $query .= "product_price   = '" . mysqli_real_escape_string($db_connection, $_GET['product_price'])   . "', "; }
-      if (isset($_GET['cat_name2']))   { $query .= "category   = '" . mysqli_real_escape_string($db_connection, $_GET['cat_name2'])   . "', "; }
-      if (isset($_GET['description']))      { $query .= "description      = '" . mysqli_real_escape_string($db_connection, $_GET['description'])      . "' "; }
-  
-		
-      $query .= "WHERE table_id = '" . mysqli_real_escape_string($db_connection, $id) . "'";
-		
-       $queryString  = $query; 
-      $query  = mysqli_query($db_connection, $query);
+      $message = 'ProductID not found';
+    } 
+    else if (isset($_GET['product_id']) && isset($_GET['product_name']) && isset($_GET['product_price']) && isset($_GET['cat_name2']) && isset($_GET['description'])) {
+      
+      $skuID        = (int)$conn->real_escape_string($id);
+      $productID    = $conn->real_escape_string($_GET['product_id']);
+      $productname  = $conn->real_escape_string($_GET['product_name']);
+      $productprice = $conn->real_escape_string($_GET['product_price']);
+      $catID        = $conn->real_escape_string($_GET['cat_name2']);
+      $description  = $conn->real_escape_string($_GET['description']);
+
+      
+      //Save Previous Price of Product
+      $query = "SELECT productprice FROM products WHERE skuID = '$skuID'";
+      $query = $conn->query($query);
+      $row = $query->fetch_array();
+      $prevprice = $row[0];
+      
+      //Update price of product records
+      $query =  "UPDATE products SET productID='$productID', ";
+      $query .= "productname='$productname', productprice='$productprice', ";
+      $query .= "description='$description', cat_catID='$catID'";
+
+      $query .= "WHERE skuID='$skuID'";
+      $query = $conn->query($query);
       if (!$query){
         $result  = 'error';
-        $message = $queryString;
+        $message = "Unable to update table entry due to SQL error or undefined Category!";
       } else {
-        $result  = 'success';
-       // $message = $queryString;
-		  $message ='Updated Successful!';
+        if ($prevprice != $productprice) {
+          /*$query = "SELECT COUNT(*) as cnt FROM `pricehist` WHERE `products_skuID`='$skuID'";
+          $query = $conn->query($query);
+          $row = $query->fetch_assoc();
+
+          if ($row['cnt'] < 5){
+            $query =  "INSERT INTO `pricehist` (`created_by`, `price`, `products_skuID`) VALUES ";
+            $query .= "('$name', '$prevprice', '$skuID')";
+          }
+          else {
+            //Query to modify oldest value
+            //SELECT * FROM `pricehist` WHERE `products_skuID`='$skuID' ORDER BY date_modified DESC
+          }*/
+          $result  = 'success';
+          $message = 'Successfully update Product: ' . $productname;
+        }
+        else {
+          $result  = 'success';
+          $message = 'Successfully update Product: ' . $productname;
+        }
       }
     }
-    
-  } elseif ($job == 'delete_product'){
+  } 
+
+  elseif ($job == 'delete_product'){
   
     // Delete product
     if ($id == ''){

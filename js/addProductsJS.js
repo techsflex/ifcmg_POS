@@ -158,10 +158,10 @@ $(document).ready(function(){
     }
   });
 
-  // Edit product button
+  // Find relevant prodcut when edit product button is clicked
   $(document).on('click', '.function_edit a', function(e){
     e.preventDefault();
-	e.stopImmediatePropagation();
+	  e.stopImmediatePropagation();
     // Get product information from database
     show_loading_message();
     var id      = $(this).data('id');
@@ -184,15 +184,14 @@ $(document).ready(function(){
         $('#form_product #product_id').val(output.data[0].product_id);
         $('#form_product #product_name').val(output.data[0].product_name);
         $('#form_product #product_price').val(output.data[0].product_price);
-		$('#form_product #cat_name').val(output.data[0].category);
-		
+		    $('#form_product #cat_name').val(output.data[0].category);
         $('#form_product #description').val(output.data[0].description);
      
         hide_loading_message();
         show_lightbox();
       } else {
         hide_loading_message();
-        show_message('Information request failed', 'error');
+        show_message(output.message, output.result);
       }
     });
     request.fail(function(jqXHR, textStatus){
@@ -201,15 +200,10 @@ $(document).ready(function(){
     });
   });
 	
-
-	
-	
-	
-	
   // Edit product submit form
   $(document).on('submit', '#form_product.edit', function(e){
     e.preventDefault();
-	e.stopImmediatePropagation();
+	  e.stopImmediatePropagation();
     // Validate form
     if (form_product.valid() === true){
       // Send product information to database
@@ -227,18 +221,8 @@ $(document).ready(function(){
         type:         'get'
       });
       request.done(function(output){
-		  
-        if (output.result == 'success'){
-          // Reload datable
-          table_products.api().ajax.reload(function(){
-            hide_loading_message();
-            var product_name = $('#product_name').val();
-            show_message("Product '" + product_name+ "' edited successfully."+output.message, 'success');
-          }, true);
-        } else {
-          hide_loading_message();
-          show_message(output.result, 'error');
-        }
+        hide_loading_message();
+        show_message(output.message, output.result);
       });
       request.fail(function(jqXHR, textStatus){
         hide_loading_message();
