@@ -1,3 +1,21 @@
+<?php
+  /* Displays user information and some useful messages */
+  session_start();
+  // Check if user is logged in using the session variable
+  if (!$_SESSION['logged_in']) {
+      $_SESSION['message'] = "You must log in before viewing your profile page!";
+      header("location: error.php");    
+  }
+
+  else {
+    // Makes it easier to read
+    $first_name = $_SESSION['first_name'];
+    $last_name  = $_SESSION['last_name'];
+    $statusID   = (int)$_SESSION['statusID'];
+    $companyID  = (int)$_SESSION['companyID'];
+  }
+?>
+
 <!doctype html>
 <html lang="en" dir="ltr">
   <head>
@@ -39,7 +57,7 @@
 			<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">	<!-- BEGIN LEFT COL --->
 				<div class="panel panel-default articles"> 	<!-- BEGIN RECEIPTS --->
 					<div class="panel-heading">	
-						Viewing All Hold Orders
+						View Held Orders
 					
 						</div>
 					<div class="panel-body articles-container table-responsive ">
@@ -47,12 +65,12 @@
 						
 				 		<table class="datatable bootstrap-table table-bordered table-hover" id="table_hold_order">
         					<thead>
-          					<tr  >
+          					<tr>
             					<th>ID</th>
             					<th>Order Date</th>
-            					<th>Order Time</th>
+								<th>Dine-in / Take-away</th>
             					<th>Order Value</th>
-            					<th>Other</th>
+            					<th>Kitchen Status</th>
             					<th>Functions</th>
          					</tr>
         					</thead>

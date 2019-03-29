@@ -57,7 +57,7 @@ $numItems = sizeof($breakdown);
 //default margin : 10mm each side
 //writable horizontal : 219-(10*2)=189mm
 
-$newHeight = ($numItems * 5) + 105;
+$newHeight = ($numItems * 5) + 110;
 $pdf = new PDF_AutoPrint('P','mm',array(80,$newHeight));
 
 $pdf->AddPage();
@@ -89,11 +89,11 @@ $pdf->Cell(10	,5,$orderID,0,1);//end of line
 $pdf->Cell(15	,5,'Order Date: ',0,0, 'L');
 $pdf->Cell(10	,5,$orderDate,0,1,'L');//end of line
 
-$pdf->Cell(15	,5,'Order Type: ',0,0,'R');
-$pdf->Cell(10	,5,$orderType,0,1,'R');//end of line
+$pdf->Cell(15	,5,'Order Type: ',0,0,'L');
+$pdf->Cell(10	,5,$orderType,0,1,'L');//end of line
 
-$pdf->Cell(15	,5,'Payment: ',0,0,'R');
-$pdf->Cell(10	,5,$paymentType,0,1,'R');//end of line
+$pdf->Cell(15	,5,'Payment: ',0,0,'L');
+$pdf->Cell(10	,5,$paymentType,0,1,'L');//end of line
 
 $pdf->Cell(60	,0.1, '',1,1,'C');
 
@@ -121,12 +121,12 @@ $pdf->Cell(25	,5,'Subtotal (PKR)',0,0);
 $pdf->Cell(20	,5,$subTotal,0,1,'R');//end of line
 
 $pdf->Cell(15	,5,'',0,0);
-$pdf->Cell(25	,5,'After Tax (PKR)',0,0);
-$pdf->Cell(20	,5,$afterTax,0,1,'R');//end of line
-
-$pdf->Cell(15	,5,'',0,0);
 $pdf->Cell(25	,5,'Discount (PKR)',0,0);
 $pdf->Cell(20	,5,$discountAmount,0,1,'R');//end of line
+
+$pdf->Cell(15	,5,'',0,0);
+$pdf->Cell(25	,5,'Tax Rate (%)',0,0);
+$pdf->Cell(20	,5,$afterTax,0,1,'R');//end of line
 
 $pdf->Cell(60	,0.1, '',1,1,'C');
 

@@ -1,35 +1,32 @@
 $(document).ready(function(){
-    
-  // On page load: datatable
-  var table_hold_order = $('#table_hold_order').dataTable({
+	// On page load datatable for Held Orders
+	var table_hold_order = $('#table_hold_order').dataTable({
+		"ajax": "dataViewHoldOrderLog.php?job=get_products",
+		"columns": [
+			{ data: "ID" },
+			{ data: "date" },
+			{ data: "type" },
+			{ data: "total" },
+			{ data: "kitchen" },      
+			{ data: "functions" }
+		],
+		"aoColumnDefs": [
+			{ "bSortable": false, "aTargets": [-1] }
+		],
+		"lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+		"oLanguage": {
+			"oPaginate": {
+				"sFirst":       " ",
+				"sPrevious":    " ",
+				"sNext":        " ",
+				"sLast":        " ",
+			},
+			"sLengthMenu":    "Records per page: _MENU_",
+			"sInfo":          "Total of _TOTAL_ records (showing _START_ to _END_)",
+			"sInfoFiltered":  "(filtered from _MAX_ total records)"
+		}
+	});
 	
-    "ajax": "dataViewHoldOrderLog.php?job=get_products",
-    "columns": [
-      { "data": "product_id" },
-      { "data": "product_name",   "sClass": "product_name" },
-      { "data": "product_price" },
-  	 { "data": "category" },
-		
-      { "data": "description"        },      
-      { "data": "functions",      "sClass": "functions" }
-    ],
-    "aoColumnDefs": [
-      { "bSortable": false, "aTargets": [-1] }
-    ],
-    "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-    "oLanguage": {
-      "oPaginate": {
-        "sFirst":       " ",
-        "sPrevious":    " ",
-        "sNext":        " ",
-        "sLast":        " ",
-      },
-      "sLengthMenu":    "Records per page: _MENU_",
-      "sInfo":          "Total of _TOTAL_ records (showing _START_ to _END_)",
-      "sInfoFiltered":  "(filtered from _MAX_ total records)"
-    }
-  });
-/////////////////////////////
 	// Show message
   function show_message(message_text, message_type){
     $('#message').html('<p>' + message_text + '</p>').attr('class', message_type);

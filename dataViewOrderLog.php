@@ -12,10 +12,8 @@ $companyID  = (int)$_SESSION['companyID'];
 if (isset($_GET['job'])){
   $job = $_GET['job'];
   if ($job == 'get_products' ||
-      $job == 'get_product'   ||
-      $job == 'add_product'   ||
-      $job == 'edit_product'  ||
-      $job == 'delete_product'){
+      $job == 'get_product'
+	 ){
     if (isset($_GET['id'])){
       $id = $_GET['id'];
       if (!is_numeric($id)){
