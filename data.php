@@ -50,7 +50,6 @@ if ($job != ''){
         $functions  = '<div class="function_buttons"><ul>';
         $functions .= '<li class="function_edit"><a data-id="'   . $company['skuID'] . '" data-name="' . $company['productname'] . '"><span>Edit</span></a></li>';
         $functions .= '<li class="function_delete_product"><a data-id="' . $company['skuID'] . '" data-name="' . $company['productname'] . '"><span>Delete</span></a></li>';
-        $functions .= '<li class="function_view_product"><a data-id="' . $company['skuID'] . '" data-name="' . $company['productname'] . '"><span>View</span></a></li>';
         $functions .= '</ul></div>';
 		
         $mysql_data[] = array(

@@ -73,8 +73,9 @@
           </div>
         </div> <!---END LEFT COL--->
       </div> <!--END ROW -->
-
-      <div class="lightbox_container" >
+		
+	  <!--CONTAINER FOR EDIT PRODUCT-->
+      <div class="lightbox_container">
         <div class="lightbox_close"></div>
         <div class="lightbox_content">
           <h2>NEW PRODUCT</h2>
@@ -141,7 +142,7 @@
           </form>
         </div>
       </div>
-
+		
       <noscript id="noscript_container">
         <div id="noscript" class="error">
           <p>JavaScript support is needed to use this page.</p>

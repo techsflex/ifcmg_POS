@@ -34,7 +34,7 @@ function generateTable(table, output) {
 }
 
 $(document).ready(function(){
-
+	"use strict";
   // On page load: datatable
   var table_products = $('#table_products').dataTable({
     "ajax": "data.php?job=get_products",
@@ -114,8 +114,8 @@ $(document).ready(function(){
 
   // Show lightbox
   function show_lightbox(){
-    $('.lightbox_bg').show();
-    $('.lightbox_container').show();
+	  $('.lightbox_bg').show();
+	  $('.lightbox_container').show();
   }
   // Hide lightbox
   function hide_lightbox(){
@@ -142,7 +142,7 @@ $(document).ready(function(){
     document.activeElement.blur();
     $('input').blur();
   }
-
+	
   // Add product button
   $(document).on('click', '#add_product', function(e){
     e.preventDefault();
@@ -309,7 +309,8 @@ $(document).ready(function(){
     }
   });
 
-  // View product price history
+  /*
+	// View product price history
   $(document).on('click', '.function_view_product a', function(e){
     e.preventDefault();
     e.stopImmediatePropagation();
@@ -326,13 +327,14 @@ $(document).ready(function(){
     });
 
     request.done(function(output){
-      hide_loading_message();
-      show_message(output.message, output.result);
+		hide_loading_message();
+		show_lightbox("prodHistory");
+		show_message(output.message, output.result);
     });
 
     request.fail(function(jqXHR, textStatus){
       hide_loading_message();
       show_message('Error accessing Product Price History: ' + textStatus, 'error');
     });
-  });
+  });*/
 });// JavaScript Document
