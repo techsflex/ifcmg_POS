@@ -12,7 +12,8 @@ $companyID  = (int)$_SESSION['companyID'];
 if (isset($_GET['job'])){
   $job = $_GET['job'];
   if ($job == 'get_products' ||
-      $job == 'get_product'
+      $job == 'get_product' ||
+	  $job == 'delete_product'
 	 ){
     if (isset($_GET['id'])){
       $id = $_GET['id'];
@@ -50,12 +51,21 @@ if ($job != ''){
 				$functions .= '<li class="function_delete_hold_order"><a data-id="' . $company['heldID'] . '" data-name="' . $company['heldID'] . '"><span>Delete</span></a></li>';
 				$functions .= '</ul></div>';
 				
+				if ((int)$company['kitchenstatus'] === 0) {
+					$kitchen = "Preparing";
+				}
+				elseif ((int)$company['kitchenstatus'] === 1) {
+					$kitchen = "Ready";
+				}
+				else {
+					$kitchen = "Rejected";
+				}
 				$mysql_data[] = array(
 					"ID"			=> $company['heldID'],
 					"date"  		=> $company['datetime'],
 					"type" 			=> $company['ordertype'],
 					"total"			=> $company['grandtotal'],
-					"kitchen" 		=> $company['kitchenstatus'],		
+					"kitchen" 		=> $kitchen,		
 					"functions"     => $functions
 				);
 			}
@@ -65,73 +75,72 @@ if ($job != ''){
 	}
 	
 	elseif ($job == 'get_product'){
-    
-    // Get product
-    if ($id == ''){
-      $result  = 'error';
-      $message = 'id missing';
-    } else {
-      $query = "SELECT * FROM `hold_orders_table` WHERE `hold_order_id` = '" . mysqli_real_escape_string($db_connection, $id) . "'";
-      $query = mysqli_query($db_connection, $query);
-      if (!$query){
-        $result  = 'error';
-        $message = 'query error';
-      } else {
-        $result  = 'success';
-        $message = 'query success';
-		  
-		 $date = date_create($company['time']);
-		$formattedTime = date_format($date, 'H:i:s');
-		  
-        while ($company = mysqli_fetch_array($query)){
-          $mysql_data[] = array(
-          "product_id"          => $company['hold_order_id'],
-          "product_name"  => $company['date'],
-          "product_price"    => $formattedTime,
-          "description"       =>  $company['discount_amount'],
-		  "category" => $company['grand_total'],		
-          
-
-          );
-        }
-      }
-    }
-  
-  }  elseif ($job == 'delete_product'){
-  
-    // Delete product
-    if ($id == ''){
-      $result  = 'error';
-      $message = 'id missing';
-    } else {
-      $query = "DELETE FROM hold_orders_table WHERE hold_order_id = '" . mysqli_real_escape_string($db_connection, $id) . "'";
-	$queryString = $query;
-      $query = mysqli_query($db_connection, $query);
-      if (!$query){
-        $result  = 'error';
-        $message = 'query error';
-      } else {
-        $result  = 'success';
-        $message = 'query successful';
-      }
-    }
-  
-  }
-  
-  
-  // Close database connection
-  $conn->close();
-
+		// Get product
+		if ($id == ''){
+			$result  = 'error';
+			$message = 'id missing';
+		}
+		else {
+			$query = "SELECT * FROM `hold_orders_table` WHERE `hold_order_id` = '" . mysqli_real_escape_string($db_connection, $id) . "'";
+			$query = mysqli_query($db_connection, $query);
+			
+			if (!$query){
+				$result  = 'error';
+				$message = 'query error';
+			} else {
+				$result  = 'success';
+				$message = 'query success';
+				
+				$date = date_create($company['time']);
+				$formattedTime = date_format($date, 'H:i:s');
+				
+				while ($company = mysqli_fetch_array($query)){
+					$mysql_data[] = array(
+						"product_id"          => $company['hold_order_id'],
+						"product_name"  => $company['date'],
+						"product_price"    => $formattedTime,
+						"description"       =>  $company['discount_amount'],
+						"category" => $company['grand_total'],
+					);
+				}
+			}
+		}
+	}
+	
+	elseif ($job == 'delete_product'){
+		// Delete product
+		if ($id == ''){
+			$result  = 'error';
+			$message = 'Selected ID is invalid ot not found!';
+		}
+		else {
+			$heldID = $conn->real_escape_string($id);
+			$query = "DELETE FROM held WHERE heldID = '$heldID'";
+			
+			$query = $conn->query($query);
+			
+			if (!$query){
+				$result  = 'error';
+				$message = 'Unable to delete record!';
+			}
+			else {
+				$result  = 'success';
+				$message = 'Selected record successfully deleted!';
+			}
+		}
+	}
+	// Close database connection
+	$conn->close();
 }
 
 // Prepare data
 $data = array(
-  "result"  => $result,
-  "message" => $message,
-  "data"    => $mysql_data
+	"result"  => $result,
+	"message" => $message,
+	"data"    => $mysql_data
 );
 
 // Convert PHP array to JSON array
 $json_data = json_encode($data);
-print $json_data;
+echo $json_data;
 ?>
