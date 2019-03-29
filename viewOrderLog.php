@@ -54,7 +54,7 @@
 						<div class="panel-body articles-container table-responsive ">
 							<table class="datatable bootstrap-table table-bordered table-hover" id="table_products">
 								<thead>
-									<tr  >
+									<tr>
 										<th>Order ID</th>
 										<th>Date / Time</th>
 										<th>Payment Method</th>

@@ -47,15 +47,15 @@ if ($job != ''){
 		else {
 			while ($company = $query->fetch_array()){
 				$functions  = '<div class="function_buttons"><ul>';
-				$functions .= '<li class="function_order_edit"><a data-id="'.$company['orderID'].'" data-name="'.$company['orderID'].'"><span>Edit</span></a></li>';
-				$functions .= '<li class="function_order_print"><a data-id="'.$company['orderID'].'" data-name="'.$company['orderID'].'"><span>Edit</span></a></li>';
+				$functions .= '<li class="function_order_edit"><a data-id="'.$company['orderID'].'" data-name="'.$company['orderID'].'"><span title="View Details"><i class="fa fa-list"></i></span></a></li>';
+				$functions .= '<li class="function_order_print"><a data-id="'.$company['orderID'].'" data-name="'.$company['orderID'].'"><span title="Print"><i class="fa fa-print"></i></span></a></li>';
 				$functions .= '</ul></div>';
 				$mysql_data[] = array(
-				  "product_id"    => $company['orderID'],
-				  "product_name"   => $company['datetime'],
-				  "product_price"  => $company['paymentID'],
-				  "category"  => $company['ordertype'],
-				  "description" => $company['grandtotal'],		
+				  "orderID"    => $company['orderID'],
+				  "datetime"   => $company['datetime'],
+				  "paymentID"  => $company['paymentID'],
+				  "ordertype"  => $company['ordertype'],
+				  "grandtotal" => $company['grandtotal'],		
 				  "functions"  => $functions
 				);
 			}

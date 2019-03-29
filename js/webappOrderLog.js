@@ -241,12 +241,11 @@ $(document).ready(function(){
 			  var newJSON = {
 				  				"orderID":			output.data[0].orderID,
 				  				"orderDate": 		output.data[0].date,				
-				  				"orderTime": 		output.data[0].time,
 			  					"subTotal":			output.data[0].sub_total,
-			  					"afterTax":			output.data[0].after_tax,
-			  					"discountAmount":	output.data[0].discount_amount,
+			  					"taxRate":			output.data[0].tax_rate,
+			  					"discount":			output.data[0].discount_amount,
 			  					"grandTotal":		output.data[0].grand_total,
-			  					"breakDown":		receiptBreakdown,
+			  					"breakdown":		receiptBreakdown,
 			  					"paymentType":		output.data[0].paymentType,
 			  					"orderType":		output.data[0].orderType
 			  					};

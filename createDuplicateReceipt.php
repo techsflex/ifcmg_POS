@@ -6,13 +6,12 @@ $getData =  json_decode($_GET['data'], true);
 //Import all values
 $orderID 		= $getData['orderID'];
 $orderDate 		= $getData['orderDate'];
-$orderTime 		= substr($getData['orderTime'], 0, strpos($getData['orderTime'], "."));
-$breakdown 		= ($getData['breakDown']);
+$breakdown 		= ($getData['breakdown']);
 $paymentType 	= $getData['paymentType'];
 $orderType 		= $getData['orderType'];
-$afterTax 		= number_format((float)$getData['afterTax'], 2, '.',',');
+$afterTax 		= number_format((float)$getData['taxRate'], 2, '.',',');
 $subTotal 		= number_format((float)$getData['subTotal'], 2, '.',',');
-$discountAmount = number_format((float)$getData['discountAmount'], 2, '.',',');
+$discountAmount = number_format((float)$getData['discount'], 2, '.',',');
 $grandTotal 	= number_format((float)$getData['grandTotal'], 0, '.',',');
 				
 require_once('fpdf17/pdf_js.php');
@@ -88,13 +87,12 @@ $pdf->Cell(15	,5,'Invoice #',0,0);
 $pdf->Cell(10	,5,$orderID,0,1);//end of line
 
 $pdf->Cell(15	,5,'Order Date: ',0,0, 'L');
-$pdf->Cell(10	,5,$orderDate,0,0,'L');
-$pdf->Cell(25	,5,'Order Type: ',0,0,'R');
+$pdf->Cell(10	,5,$orderDate,0,1,'L');//end of line
+
+$pdf->Cell(15	,5,'Order Type: ',0,0,'R');
 $pdf->Cell(10	,5,$orderType,0,1,'R');//end of line
 
-$pdf->Cell(15	,5,'Order Time: ',0,0,'L');
-$pdf->Cell(10	,5,$orderTime,0,0,'L');//end of line
-$pdf->Cell(25	,5,'Payment: ',0,0,'R');
+$pdf->Cell(15	,5,'Payment: ',0,0,'R');
 $pdf->Cell(10	,5,$paymentType,0,1,'R');//end of line
 
 $pdf->Cell(60	,0.1, '',1,1,'C');

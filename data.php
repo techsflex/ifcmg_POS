@@ -48,8 +48,8 @@ if ($job != ''){
       $message = 'query success';
       while ($company = mysqli_fetch_array($query)){
         $functions  = '<div class="function_buttons"><ul>';
-        $functions .= '<li class="function_edit"><a data-id="'   . $company['skuID'] . '" data-name="' . $company['productname'] . '"><span>Edit</span></a></li>';
-        $functions .= '<li class="function_delete_product"><a data-id="' . $company['skuID'] . '" data-name="' . $company['productname'] . '"><span>Delete</span></a></li>';
+        $functions .= '<li class="function_edit"><a data-id="'   . $company['skuID'] . '" data-name="' . $company['productname'] . '"><span title="Edit"><i class="fa fa-edit"></i></span></a></li>';
+        $functions .= '<li class="function_delete_product"><a data-id="' . $company['skuID'] . '" data-name="' . $company['productname'] . '"><span title="Delete"><i class="fa fa-trash"></i></span></a></li>';
         $functions .= '</ul></div>';
 		
         $mysql_data[] = array(
