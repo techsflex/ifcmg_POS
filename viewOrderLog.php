@@ -1,3 +1,21 @@
+<?php
+  /* Displays user information and some useful messages */
+  session_start();
+  // Check if user is logged in using the session variable
+  if (!$_SESSION['logged_in']) {
+      $_SESSION['message'] = "You must log in before viewing your profile page!";
+      header("location: error.php");    
+  }
+
+  else {
+    // Makes it easier to read
+    $first_name = $_SESSION['first_name'];
+    $last_name  = $_SESSION['last_name'];
+    $statusID   = (int)$_SESSION['statusID'];
+    $companyID  = (int)$_SESSION['companyID'];
+  }
+?>
+
 <!doctype html>
 <html lang="en" dir="ltr">
 	<head>
@@ -30,18 +48,18 @@
 				<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">	<!-- BEGIN LEFT COL --->
 					<div class="panel panel-default articles"> 	<!-- BEGIN RECEIPTS --->
 						<div class="panel-heading">	
-							Viewing All Orders
+							View all Orders
 						</div>
 						
 						<div class="panel-body articles-container table-responsive ">
 							<table class="datatable bootstrap-table table-bordered table-hover" id="table_products">
 								<thead>
 									<tr  >
-										<th>ID</th>
-										<th>Order Date</th>
-										<th>Order Time</th>
-										<th>Total<br>Order Value</th>
-										<th>Discount</th>
+										<th>Order ID</th>
+										<th>Date / Time</th>
+										<th>Payment Method</th>
+										<th>Dine-In / Take-Away</th>
+										<th>Total Value</th>
 										<th>Functions</th>
 									</tr>
 								</thead>
