@@ -14,7 +14,8 @@ if (isset($_GET['job'])){
       $job == 'get_product'   ||
       $job == 'add_product'   ||
       $job == 'edit_product'  ||
-      $job == 'delete_product'){
+      $job == 'delete_product'||
+      $job == 'view_history'){
     if (isset($_GET['id'])){
       $id = $_GET['id'];
       if (!is_numeric($id)){
@@ -244,6 +245,37 @@ if ($job != ''){
       } else {
         $result  = 'success';
         $message = 'Product successfully deleted!';
+      }
+    }
+  }
+
+  else if ($job == 'view_history') {
+    //View Product Price History
+    if ($id == ''){
+      $result = 'error';
+      $message = 'Invalid Product ID';
+    }
+
+    else {
+      $skuID = (int)$conn->real_escape_string($id);
+      $query = "SELECT * FROM pricehist WHERE products_skuID='$skuID'";
+      $query = $conn->query($query);
+
+      if (!$query){
+        $result = 'error';
+        $message = 'Invalid Product ID: '. $skuID;   
+      }
+
+      else {
+        while ($row = $query->fetch_array()){
+          $mysql_data[] = array(
+            "date_modified" => $row['date_modified'],
+            "created_by"    => $row['created_by'],
+            "price"         => $row['price']
+          );
+        }
+        $result  = 'success';
+        $message = 'Product Price History successfully extracted';
       }
     }
   }

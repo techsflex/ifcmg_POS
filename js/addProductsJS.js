@@ -1,3 +1,38 @@
+function generateTableHead(table, headers) {
+  let thead = table.createTHead();
+  let row = thead.insertRow();
+  for (let key in headers) {
+    let th = document.createElement("th");
+    let text = document.createTextNode(headers[key]);
+    th.appendChild(text);
+    row.appendChild(th);
+  }
+}
+
+function generateTable(table, output) {
+  let tbody = table.createTBody();
+  for (var i=0; i < output.data.length; i++) {
+    var row = tbody.insertRow();
+    //Date Modified
+    var td1 = document.createElement("td");
+    var text1 = document.createTextNode(output.data[i].date_modified);
+    //created_by
+    var td2 = document.createElement("td");
+    var text2 = document.createTextNode(output.data[i].created_by);
+    //price
+    var td3 = document.createElement("td");
+    var text3 = document.createTextNode(output.data[i].price);
+
+    //Append to Table
+    td1.appendChild(text1);
+    td2.appendChild(text2);
+    td3.appendChild(text3);
+    row.appendChild(td1);
+    row.appendChild(td2);
+    row.appendChild(td3);
+  }
+}
+
 $(document).ready(function(){
 
   // On page load: datatable
@@ -135,7 +170,7 @@ $(document).ready(function(){
       // Send product information to database
       hide_ipad_keyboard();
       hide_lightbox();
-      //show_loading_message();
+      show_loading_message();
       
       var form_data = $('#form_product').serialize();
       var request   = $.ajax({
@@ -149,7 +184,9 @@ $(document).ready(function(){
 
       request.done(function(output){
         hide_loading_message();
-        show_message(output.message, output.result);
+        table_products.api().ajax.reload(function(){
+          show_message(output.message, output.result);
+        }, true);
       });
       request.fail(function(jqXHR, textStatus){
         hide_loading_message();
@@ -222,7 +259,9 @@ $(document).ready(function(){
       });
       request.done(function(output){
         hide_loading_message();
-        show_message(output.message, output.result);
+        table_products.api().ajax.reload(function(){
+          show_message(output.message, output.result);
+        }, true);
       });
       request.fail(function(jqXHR, textStatus){
         hide_loading_message();
@@ -270,43 +309,30 @@ $(document).ready(function(){
     }
   });
 
-  // Delete product
-  $(document).on('click', '.function_edit_product a', function(e){
+  // View product price history
+  $(document).on('click', '.function_view_product a', function(e){
     e.preventDefault();
     e.stopImmediatePropagation();
-    
-    var urlVal='data.php?job=delete_product&id=';
-    var product_name = $(this).data('name');
-    
-    if (confirm("Are you sure you want to delete '" + product_name + "'?")){
-      //show_loading_message();
-      var id      = $(this).data('id');
-      var request = $.ajax({
-        url:          urlVal + id,
-        cache:        false,
-        dataType:     'json',
-        contentType:  'application/json; charset=utf-8',
-        type:         'get'
-      });
-      request.done(function(output){
-        if (output.result === 'success'){
-          // Reload datable
-      
-         table_products.api().ajax.reload(function(){
-              //hide_loading_message();
-              show_message("Product '" + product_name + "' deleted successfully.", 'success');
-              }, true); 
-            
-       } else {
-          hide_loading_message();
-          show_message('Delete request failed', 'error');
-        }
-      });
-      request.fail(function(jqXHR, textStatus){
-        hide_loading_message();
-        show_message('Delete request failed: ' + textStatus, 'error');
-      });
-    }
-  });
+    show_loading_message();
 
+    var id      = $(this).data('id');
+    var request = $.ajax({
+      url:          'data.php?job=view_history',
+      cache:        false,
+      data:         'id=' + id,
+      dataType:     'json',
+      contentType:  'application/json; charset=utf-8',
+      type:         'get'
+    });
+
+    request.done(function(output){
+      hide_loading_message();
+      show_message(output.message, output.result);
+    });
+
+    request.fail(function(jqXHR, textStatus){
+      hide_loading_message();
+      show_message('Error accessing Product Price History: ' + textStatus, 'error');
+    });
+  });
 });// JavaScript Document
