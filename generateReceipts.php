@@ -1,19 +1,14 @@
-
 <?php
 
 include('config.php');
-
 session_start();
 
 date_default_timezone_set('Asia/Karachi');
-$date = date('Y-m-d H:i:s');
 
-$_SESSION['date'] =  date("Y-m-d");
-$_SESSION['time'] = date('H:i:s');
-$subTotal = $_POST["subTotal"];
-$afterTax = $_POST["afterTax"];
-$discountAmount = $_POST["discountAmount"];
-$grandTotal = $_POST["grandTotal"];
+$subTotal = (float)$_POST["subTotal"];
+$afterTax = (float)$_POST["afterTax"];
+$discountAmount = (float)$_POST["discountAmount"];
+$grandTotal = (float)$_POST["grandTotal"];
 $breakdown = ($_POST["breakdown"]);
 $paymentType = $_POST["paymentType"];
 $orderType = $_POST["orderType"];
@@ -30,7 +25,7 @@ $message = "status: ";
          // ORDER STATUS = 1 MEANS PROCEED WITH ORDER - CONSIDER FINAL
 		if($orderStatus==1){
 			
-			$queryString = "INSERT INTO `orders_table`( `date`, `time`, `sub_total`, `after_tax`, `discount_amount`, `grand_total`, `breakdown`, `payment_id`, `order_type`) VALUES ('".$_SESSION['date']."','".$_SESSION['time']."','".$subTotal."','".$afterTax."','".$discountAmount."','".$grandTotal."','".$breakdown."','".$paymentType."','".$orderType."')  "; 
+			$queryString = "INSERT INTO `orders`( `subtotal`, `taxpaid`, `discount`, `grandtotal`, `breakdown`, `paymentID`, `ordertype`) VALUES ('".$subTotal."','".$afterTax."','".$discountAmount."','".$grandTotal."','".$breakdown."','".$paymentType."','".$orderType."')  "; 
 			
 			 if (mysqli_query($conn, $queryString)) {
 					 $message= $message." Insert into Orders Table: SUCCESSFUL  ";
@@ -43,7 +38,7 @@ $message = "status: ";
 			
 			if($holdOrderId!=-1){
 				//If Proceed with order and order was previously on hold, remove from hold orders
-				$queryStringHoldOrder = "DELETE FROM `hold_orders_table` WHERE `hold_order_id`='".$holdOrderId."'";
+				$queryStringHoldOrder = "DELETE FROM `held` WHERE `heldID`='".$holdOrderId."'";
 				
 				 if (mysqli_query($conn, $queryStringHoldOrder)) {					 
 					  $message= $message." Delete from Hold Orders Table: SUCCESSFUL.  ";
@@ -70,7 +65,7 @@ $message = "status: ";
 			
 			
 			   if($holdOrderId!=-1){		   
-				  $queryString = "UPDATE `hold_orders_table` SET `sub_total`='".$subTotal."',`after_tax`='".$afterTax."',`discount_amount`='".$discountAmount."',`grand_total`='".$grandTotal."',`breakdown`='".$breakdown."'`order_type`='".$orderType."' WHERE `hold_order_id`=".$holdOrderId.""; 	
+				  $queryString = "UPDATE `held` SET `subtotal`='".$subTotal."',`taxpaid`='".$afterTax."',`discount`='".$discountAmount."',`grandtotal`='".$grandTotal."',`breakdown`='".$breakdown."'`ordertype`='".$orderType."' WHERE `heldID`=".$holdOrderId.""; 	
 				   if (mysqli_query($conn, $queryString)) {					 
 					  $message= $message." Update Hold Orders Table: SUCCESSFUL.  ";
 				  }else{
@@ -80,7 +75,7 @@ $message = "status: ";
 			   
                						
 			    else{
-					$queryString = "INSERT INTO `hold_orders_table`( `date`, `time`, `sub_total`, `after_tax`, `discount_amount`, `grand_total`, `breakdown`, `order_type`) VALUES ('".$_SESSION['date']."','".$_SESSION['time']."','".$subTotal."','".$afterTax."','".$discountAmount."','".$grandTotal."','".$breakdown."','".$orderType."')  "; 
+					$queryString = "INSERT INTO `held`( `sub_total`, `taxpaid`, `discount`, `grandtotal`, `breakdown`, `ordertype`) VALUES ('".$subTotal."','".$afterTax."','".$discountAmount."','".$grandTotal."','".$breakdown."','".$orderType."')  "; 
 					
 					if (mysqli_query($conn, $queryString)) {					 
 					  $message= $message." Insert Hold Orders Table: SUCCESSFUL.  ";
@@ -88,10 +83,6 @@ $message = "status: ";
 					   $message= $message." Insert Hold Orders Table: FAILED.  ";
 				}
 				}
-			
-			
-				
- 			
 			
 		}
 		
@@ -120,7 +111,7 @@ $message = "status: ";
 
 
 
-
+$conn->close();
 //echo json_encode("AND THE STATUS RECEIVED IS ".$orderStatus);
 echo json_encode($data);
 

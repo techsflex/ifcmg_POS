@@ -1,4 +1,4 @@
--- -----------------------------------------------------
+	-- -----------------------------------------------------
 -- Table `login`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `login`;
@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS `company` (
   `city` VARCHAR(20) NULL,
   `phone` VARCHAR(16) NULL,
   `numtables` INT UNSIGNED DEFAULT 0,
+  `taxrate` FLOAT UNSIGNED DEFAULT 17,
   `posversion_posID` INT UNSIGNED DEFAULT 1,
   PRIMARY KEY (`companyID`),
   UNIQUE KEY `companyname` (`companyname`),
@@ -184,11 +185,11 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `ordertype` VARCHAR(9) NOT NULL,
   `datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `subtotal` FLOAT NOT NULL,
-  `taxrate` FLOAT NOT NULL,
+  `taxpaid` FLOAT NOT NULL,
   `discount` FLOAT NOT NULL DEFAULT 0,
   `grandtotal` FLOAT NOT NULL,
   `breakdown` VARCHAR(10000) NOT NULL,
-  `kitchenstatus` INT NOT NULL,
+  `kitchenstatus` INT NOT NULL DEFAULT 0,
   `company_companyID` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`orderID`),
   CONSTRAINT `fk_orders_company1`
@@ -206,7 +207,7 @@ CREATE TABLE IF NOT EXISTS `held` (
   `ordertype` VARCHAR(9) NOT NULL,
   `datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `subtotal` FLOAT NOT NULL,
-  `taxrate` FLOAT NOT NULL,
+  `taxpaid` FLOAT NOT NULL,
   `discount` FLOAT NOT NULL DEFAULT 0,
   `grandtotal` FLOAT NOT NULL,
   `breakdown` VARCHAR(10000) NOT NULL,
