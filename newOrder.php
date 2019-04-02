@@ -1,13 +1,28 @@
+<?php
+  /* Displays user information and some useful messages */
+  session_start();
+  // Check if user is logged in using the session variable
+  if (!$_SESSION['logged_in']) {
+      $_SESSION['message'] = "You must log in before viewing your profile page!";
+      header("location: error.php");    
+  }
+
+  else {
+    // Makes it easier to read
+    $first_name = $_SESSION['first_name'];
+    $last_name  = $_SESSION['last_name'];
+    $statusID   = (int)$_SESSION['statusID'];
+    $companyID  = (int)$_SESSION['companyID'];
+  }
+?>
+
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>New Order</title>
-<meta charset="utf-8">
+	<meta charset="utf-8">
+	<title>New Order</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
-	 <link href="./css/bootstrap.css" rel="stylesheet" type="text/css">
-	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/datepicker3.css" rel="stylesheet">
 	<link href="css/styles.css" rel="stylesheet">
@@ -17,17 +32,10 @@
 	<!--Custom Font-->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 	
-		
-  
-  <!---<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
- <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
-  
-	<script src="js/jquery.min.js"></script> -->
+	<script src="js/bootstrap.min.js"></script>  
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="/js/wow.min.js"></script>
 	<script>new WOW().init();</script>
-
-	
-     
 	
 </head>
 
@@ -35,10 +43,12 @@
 	<div class="col-sm-12  col-lg-12  main">
 		<div class="row">
 			<ol class="breadcrumb">
-				<li><a href="#">
-					<em class="fa fa-home"></em>
-				</a></li>
-				<li class="active">New Order</li>
+				<li>
+					<a href="#"><em class="fa fa-home"></em></a>
+				</li>
+				<li class="active">
+					New Order
+				</li>
 			</ol>
 		</div><!--/.row-->
 		
@@ -63,12 +73,11 @@
 							<?php
 							if(isset($_GET['id'])) {
 								include 'config.php';
-								$holdOrderId = $_GET['id'];
-								$queryString = "SELECT `order_type` FROM `hold_orders_table` WHERE `hold_order_id`='".$holdOrderId."'";
+								$holdOrderId = (int)$conn->real_escape_string($_GET['id']);
+								$queryString = "SELECT `ordertype` FROM `held` WHERE `heldID`='$holdOrderId'";
 								$query = $conn->query($queryString);
 								while ($row = $query->fetch_assoc()) {
-									$orderType = $row['order_type'];
-									break;
+									$orderType = $row['ordertype'];
 								}
 									
 								if($orderType == "Dine-In") {
@@ -79,7 +88,7 @@
 									echo "<input type='radio' name='orderType' id='dinein' value='Dine-In'> Dine-In&nbsp;&nbsp;";
 									echo "<input type='radio' name='orderType' id='takeaway' value='Take-Away' checked='checked'> Take-Away";
 								}
-									
+								$conn->close();	
 							}
 							
 							else {
@@ -108,15 +117,14 @@
 								<?php
 								if(isset($_GET['id'])) {
 									include 'config.php';
-									$holdOrderId = $_GET['id'];	
-									$queryString = "SELECT * FROM `hold_orders_table` WHERE `hold_order_id`='".$holdOrderId."'";
+									$holdOrderId = (int)$conn->real_escape_string($_GET['id']);
+									$queryString = "SELECT * FROM `held` WHERE `heldID`='$holdOrderId'";
 									$query = $conn->query($queryString);
 									$breakdown = "";
 									//get breakdown string from corresponding order:
 									
 									while ($row = $query->fetch_assoc()) {
 										$breakdown = $row['breakdown'];
-										break;
 									}
 									
 									//Split breakdown into corresponding info
@@ -138,6 +146,7 @@
 											$rows= $rows + 1;
 										}
 									}
+									$conn->close();
 								}
 								
 								else {
@@ -162,24 +171,31 @@
 					<div class="panel-body">
 					<table id="amountTable"  name="amountTable" width="100%" cellspacing="5" cellpadding="20" class="bootstrap-table table-responsive">
   						<tbody>
-   						<tr>
-      						<td class="title" >Sub Total</td>
-      						<td class="amount" id="subTotal" name="subTotal">0.00</td>
-    					</tr>
-   						<tr>
-      						<td class="title">GST (15%)</td>
-      						<td class="amount" id="afterTax" name="afterTax">0</td>
-    					</tr>
-  						<tr>
-      						<td class="title">Discount (PKR)</td>
-
-      						
-      						<td class="amount" ><input id="discountAmount"  name="discountAmount" type="number"  value="0" style="width: 3em; text-align: right;" min="0" max="100"/></td>
-    					</tr>
-   						<tr>
-      						<td class="title">Grand Total</td>
-      						<td class="amount" id="grandTotal" name="grandTotal">0.00</td>
-    					</tr>
+							<tr>
+      							<td class="title" >Sub Total</td>
+      							<td class="amount" id="subTotal" name="subTotal">0.00</td>
+    						</tr>
+  							<tr>
+      							<td class="title">Discount (PKR)</td>
+      							<td class="amount" ><input id="discountAmount"  name="discountAmount" type="number"  value="0" style="width: 3em; text-align: right;" min="0" max="100"/></td>
+    						</tr>
+							<tr>
+      							<td class="title">GST (<?php
+									include "config.php";
+									$query = "SELECT `taxrate` FROM `company` WHERE `companyID`='$companyID'";
+									$query = $conn->query($query);
+									while ($row = $query->fetch_assoc()) {
+										$taxrate = $row['taxrate'];
+									}
+									echo $taxrate;
+									$conn->close();
+									?>%)</td>
+      							<td class="amount" id="afterTax" name="afterTax">0</td>
+    						</tr>
+							<tr>
+								<td class="title">Grand Total</td>
+								<td class="amount" id="grandTotal" name="grandTotal">0.00</td>
+							</tr>
  					 </tbody>
 					</table>
 					<br>
@@ -302,15 +318,16 @@
 						
 						<?php
 						include 'config.php';
-						$db = $conn;
 						//$return_arr =array();
-						$query = $db->query("SELECT * FROM `categories_table` ORDER BY `cat_name` ASC");
+						$query = $conn->query("SELECT * FROM `cat` WHERE company_companyID='$companyID' ORDER BY `catname` ASC");
 						$allCats = array();
 						while ($row = $query->fetch_assoc()) {
-							$cat_code = str_replace(" ", "-", $row['cat_name']);
-							echo "<button class=\"btn btn-default filter-button\" data-filter='".$cat_code."'> ".$row['cat_name']."</button>";
+							$catname = $row['catname'];
+							$cat_code = str_replace(" ", "-", $catname);
+							echo "<button class=\"btn btn-default filter-button\" data-filter=\"$cat_code\">$catname</button>";
 							array_push($allCats, $cat_code);
 						}
+						$conn->close();
 						
 						//print_r($allCats);
 						?>
@@ -330,20 +347,19 @@
 						</div>
 						
 						<?php
-						include 'config.php';
+							include 'config.php';
 							//print_r($allCats);
 			
 							//For each category
 							foreach ($allCats as $cat_class) {
-				
 								//Remove hypens, replace with whitespace for exact cat names
 			    				$cat_name= str_replace("-", " ", $cat_class);
 								//Get All products from that category from DB -> get cat Id from cat name (INNER JOIN)
-			     				$query_db = "SELECT  * FROM products_table t1 INNER JOIN  categories_table t2 ON t1.category= t2.cat_id WHERE t2.cat_name='".$cat_name."'";
-								$query = $db->query($query_db);
+			     				$query_db = "SELECT * FROM products t1 INNER JOIN cat t2 ON t1.cat_catID = t2.catID WHERE t2.catname='".$cat_name."'";
+								$query = $conn->query($query_db);
             					while ($row = $query->fetch_assoc()) {	?>
                  					<div style="text-align: center;" class="col-lg-4 col-md-6 col-sm-6 col-xs-12 gallery-image filter <?php echo $cat_class;?>">
-			     					<button class="color button items dark-blue" value="<?php echo $row['table_id']."/".$row['product_id']."/".$row['product_name']."/".$row['product_price']; ?>"><?php echo $row['product_name']; ?></button>
+			     					<button class="color button items dark-blue" value="<?php echo $row['skuID']."/".$row['productID']."/".$row['productname']."/".$row['productprice']; ?>"><?php echo $row['productname']; ?></button>
 									</div>								
 				 				<?php
 																	  
@@ -351,8 +367,7 @@
 									// echo $row['cat_name']." ".$row['table_id']." ".$row['product_id']." ".$row['product_name']." ".$row['product_price']." ".$row['description']." ".$row['cat_id']."<br>";
 								}
 							}
-						
-			
+						$conn->close();
 						?>
 					</div>
 				</div>
@@ -530,15 +545,25 @@
 			}
 			
 			document.getElementById("subTotal").innerHTML = subTotal+'';
-			document.getElementById("afterTax").innerHTML = (+subTotal * +1.15).toFixed(2) +'';
-			grandTotal();
+			var discount = +(document.getElementById("discountAmount").value);
+			var newSubTotal = subTotal - discount;
+			var getTaxRate = $.ajax({
+				url: "getTaxRate.php",
+				type: "POST",
+				});
+			getTaxRate.done(function(output){
+				document.getElementById("afterTax").innerHTML = (+newSubTotal * +parseFloat(output)/100).toFixed(2) +'';
+				grandTotal();
+			});
+			//alert(taxrate);
 		}	
 		
 		
 		function grandTotal(){		  
-			var afterTax =  +document.getElementById("afterTax").innerHTML ;
+			var afterTax = +document.getElementById("afterTax").innerHTML ;
 			var discount = +(document.getElementById("discountAmount").value);
-			var grandTotal = afterTax - discount ;
+			var subTotal = +document.getElementById("subTotal").innerHTML ;
+			var grandTotal = subTotal - discount + afterTax;
 			
 			document.getElementById("grandTotal").innerHTML  = (+grandTotal).toFixed(2)+'/='
 		}
@@ -550,6 +575,8 @@
 
 		
 		$('#amountTable').bind('keyup', 'discountAmount', function(event){
+			document.getElementById("discountAmount").max = document.getElementById("subTotal").innerHTML;
+			updateAmount();
 			grandTotal();
 			
 			});
@@ -617,7 +644,8 @@
 	document.getElementById("cancelOrder").onclick = function () {	
 		var r = confirm("Cancel Order?");
 			if (r == true) {
-    		  location.href = "index.html";
+				//location.href = "index.html";
+				$("#main_content").load("newOrder.php");
 			} 		
     };
 	
@@ -664,9 +692,9 @@
 		
 			
 		
-	var subTotal= document.getElementById("amountTable").rows[0].cells[1].innerHTML;
-	var afterTax= document.getElementById("amountTable").rows[1].cells[1].innerHTML;
-	var grandTotal = Math.round(parseFloat((document.getElementById("amountTable").rows[3].cells[1].innerHTML).replace("/=","")));
+	var subTotal = +document.getElementById("subTotal").innerHTML;
+	var afterTax = document.getElementById("afterTax").innerHTML;
+	var grandTotal = Math.round(parseFloat((document.getElementById("grandTotal").innerHTML).replace("/=","")));
 			
 	var jsonObj = {"subTotal":subTotal, "afterTax":afterTax, "discountAmount":discountAmount, "grandTotal":grandTotal, "breakdown":jsonArr, "receiptProv":receiptProv, "receiptFinal":receiptFinal};
 			
@@ -701,11 +729,11 @@
 					updateAmount(); 		
             });
 			
-	 		if (receiptProv === "Yes" || receiptFinal === "Yes") {
+	 		/*if (receiptProv === "Yes" || receiptFinal === "Yes") {
 				//alert("Now generating a receipt");			
 				var stringJSON = JSON.stringify(jsonObj);
 				var newwindow = window.open("createpdf.php?data="+stringJSON, '_blank');
-			}
+			}*/
 		}
 		receiptProv = null;
 		receiptFinal = null;
