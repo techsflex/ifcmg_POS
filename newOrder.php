@@ -723,20 +723,16 @@
 				}
 			});
 			
-			$("#myTable tbody").find('input[name="record"]').each(function(){			
-                    $(this).parents("tr").remove();
-				    document.getElementById("amountTable").rows[2].cells[1].value="0";
-					updateAmount(); 		
-            });
-			
-	 		/*if (receiptProv === "Yes" || receiptFinal === "Yes") {
+			if (receiptProv === "Yes" || receiptFinal === "Yes") {
 				//alert("Now generating a receipt");			
 				var stringJSON = JSON.stringify(jsonObj);
 				var newwindow = window.open("createpdf.php?data="+stringJSON, '_blank');
-			}*/
+			}
 		}
 		receiptProv = null;
 		receiptFinal = null;
+		
+		$("#main_content").load("newOrder.php");
 	};
 	
 	

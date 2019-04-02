@@ -24,6 +24,7 @@ class PDF_AutoPrint extends PDF_JavaScript
     }
 }
 
+$companyID = (int)$_SESSION['companyID'];
 $afterTax = number_format((float)$_SESSION['afterTax'], 2, '.',',');
 $subTotal = number_format((float)$_SESSION['subTotal'], 2, '.',',');
 $discountAmount = number_format((float)$_SESSION['discountAmount'], 2, '.',',');
@@ -42,7 +43,7 @@ if ($receiptProv === "Yes" && $receiptFinal === "No") {
 }
 else if ($receiptProv === "No" && $receiptFinal === "Yes") {
 	$receiptHeader = "RECEIPT";
-	$query = ("SELECT * FROM `orders_table`  ORDER BY `order_id` DESC LIMIT 1");
+	$query = ("SELECT * FROM `orders` WHERE company_companyID='$companyID' ORDER BY `orderID` DESC LIMIT 1");
 	
 	if ($result=mysqli_query($conn, $query)) {
 		 	$id = (mysqli_fetch_row($result)[0]);
@@ -123,20 +124,20 @@ $pdf->Cell(25	,5,'Subtotal (PKR)',0,0);
 $pdf->Cell(20	,5,$subTotal,0,1,'R');//end of line
 
 $pdf->Cell(15	,5,'',0,0);
-$pdf->Cell(25	,5,'After Tax (PKR)',0,0);
-//$pdf->Cell(5	,5,'PKR',1,0);
-$pdf->Cell(20	,5,$afterTax,0,1,'R');//end of line
-
-$pdf->Cell(15	,5,'',0,0);
 $pdf->Cell(25	,5,'Discount (PKR)',0,0);
 //$pdf->Cell(5	,5,'PKR',1,0);
 $pdf->Cell(20	,5,$discountAmount,0,1,'R');//end of line
+
+$pdf->Cell(15	,5,'',0,0);
+$pdf->Cell(25	,5,'GST (PKR)',0,0);
+//$pdf->Cell(5	,5,'PKR',1,0);
+$pdf->Cell(20	,5,$afterTax,0,1,'R');//end of line
 
 $pdf->Cell(60	,0.1, '',1,1,'C');
 
 $pdf->SetFont('Arial','B',7);
 $pdf->Cell(15	,5,'',0,0);
-$pdf->Cell(25	,5,'Total Due (PKR)',0,0);
+$pdf->Cell(25	,5,'Total (PKR)',0,0);
 //$pdf->Cell(5	,5,'PKR',1,0);
 $pdf->Cell(20	,5,$grandTotal,0,1,'R');//end of line
 $pdf->Cell(60	,0.1, '',1,1,'C');
@@ -169,7 +170,4 @@ $pdf->Cell(10	,5, $date,0,1);//end of line
 //Output to pdf
 $pdf->AutoPrint();
 $pdf->Output();
-session_unset();
-session_destroy();
-ob_end_flush
 ?>

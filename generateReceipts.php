@@ -6,6 +6,7 @@ session_start();
 date_default_timezone_set('Asia/Karachi');
 
 $companyID = (int)$_SESSION['companyID'];
+
 $subTotal = (float)$_POST["subTotal"];
 $afterTax = (float)$_POST["afterTax"];
 $discountAmount = (float)$_POST["discountAmount"];
