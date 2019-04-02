@@ -25,11 +25,12 @@ CREATE TABLE IF NOT EXISTS `status` (
 
 INSERT INTO `status` (`statusID`, `statuscaption`) VALUES
 (1, 'none'),
-(2, 'admin'),
-(3, 'super'),
-(4, 'user'),
-(5, 'kitch'),
-(6, 'close');
+(2, 'block'),
+(3, 'close'),
+(4, 'super'),
+(5, 'user'),
+(6, 'kitch'),
+(7, 'admin');
 
 
 -- -----------------------------------------------------

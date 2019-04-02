@@ -33,15 +33,6 @@
   
   <body>
     <div class="col-sm-12  col-lg-12   main">
-      <div class="row">
-        <ol class="breadcrumb">
-          <li><a href="#">
-            <em class="fa fa-home"></em>
-          </a></li>
-
-          <li class="active">Products</li>
-        </ol>
-      </div><!--/.row-->
 
       <div class="row">
         <h1 class="page-header">Products</h1>

@@ -167,6 +167,7 @@ if (!is_null($id)) {
 $pdf->Cell(10	,5,'Printed:',0,0);
 $pdf->Cell(10	,5, $date,0,1);//end of line
 
+$conn->close();
 //Output to pdf
 $pdf->AutoPrint();
 $pdf->Output();

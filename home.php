@@ -156,6 +156,11 @@
 			<li onClick="loadPage(this)"  id="add_products" value="1"  ><a ><em class="fa fa-bars">&nbsp;</em> All Products</a></li>
 			<li onClick="loadPage(this)"  id="order_log" value="3" ><a ><em class="fa fa-file">&nbsp;</em> Order Log</a></li>
 			<li onClick="loadPage(this)"  id="hold_order_log" value="4" ><a ><em class="fa fa-clock-o">&nbsp;</em> Hold Order Log</a></li>
+			<?php
+				if ($statusID === 4) {
+					echo '<li onClick="loadPage(this)"  id="company_setup" value="7" ><a ><em class="fa fa-cog">&nbsp;</em> Company Settings</a></li>';
+				}
+			?>
 			<br><br>
 			
 			<?php
@@ -196,13 +201,6 @@
 	
 			<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" >
 		<div class="col-lg-12" id="main_content">
-		
-			<ol class="breadcrumb">
-				<li><a href="#">
-					<em class="fa fa-home"></em>
-				</a></li>
-				<li class="active">Dashboard</li>
-			</ol>
 				<div class="row">
 			<div class="col-lg-12">
 				<h1 class="page-header">Dashboard</h1>
@@ -331,6 +329,10 @@
 		else if(el.value==4){
 			 $("#main_content").load("viewHoldOrderLog.php");
 			
+		}
+		
+		else if(el.value==7){
+			$("#main_content").load("companysetup.php");
 		}
 		
 	}

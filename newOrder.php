@@ -41,16 +41,6 @@
 
 <body>
 	<div class="col-sm-12  col-lg-12  main">
-		<div class="row">
-			<ol class="breadcrumb">
-				<li>
-					<a href="#"><em class="fa fa-home"></em></a>
-				</li>
-				<li class="active">
-					New Order
-				</li>
-			</ol>
-		</div><!--/.row-->
 		
 		<div class="row">
 			<div class="col-lg-12">
