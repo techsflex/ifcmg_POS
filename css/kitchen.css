@@ -1,4 +1,27 @@
-.border {
-	border-width: 5px;
+.border-right {
+	border-width: thick;
+	border-color: black;
+}
+.kitchenContainer {
+	overflow: hidden;
+    width: 100%;
+	font-weight: bold;
 }
 
+.dinein {
+    float: left;
+    border: thick solid #505160;
+	background-color: #68829E;
+    margin: 20px;
+    width: 100px;
+    height: 100px;
+}
+
+.takeaway {
+	float: left;
+    border: thick solid #598234;
+	background-color: #AEBD38;
+    margin: 20px;
+    width: 100px;
+    height: 100px;
+}
