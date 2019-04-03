@@ -42,26 +42,24 @@
 						$kitchenstatus = 0; //0->Preparing, 1->Ready
 
 						//Extract from Placed Orders Table
-						$query = "SELECT `datetime`, `orderID`, `ordertype`, `breakdown` FROM `orders` WHERE `kitchenstatus`='$kitchenstatus' AND company_companyID='$companyID' ORDER BY `datetime` ASC";
+						$query = "SELECT `datetime`, `orderID`, `ordertype` FROM `orders` WHERE `kitchenstatus`='$kitchenstatus' AND company_companyID='$companyID' ORDER BY `datetime` ASC";
 						$query = $conn->query($query);
 						while ($row = $query->fetch_assoc()){
 							$kitchenList[] = array(
 								"datetime"	=> $row['datetime'],
 								"orderID"   => $row['orderID'],
 								"orderType" => $row['ordertype'],
-								"breakdown" => $row['breakdown'],
 							);
 						}
 
 						//Extract from Hold Orders Table
-						$query = "SELECT `datetime`, `heldID`, `ordertype`, `breakdown` FROM `held` WHERE `kitchenstatus`='$kitchenstatus' AND company_companyID='$companyID' ORDER BY `datetime` ASC";
+						$query = "SELECT `datetime`, `heldID`, `ordertype` FROM `held` WHERE `kitchenstatus`='$kitchenstatus' AND company_companyID='$companyID' ORDER BY `datetime` ASC";
 						$query = $conn->query($query);
 						while ($row = $query->fetch_assoc()){
 							$kitchenList[] = array(
 								"datetime"	=> $row['datetime'],
 								"heldID"   => $row['heldID'],
 								"orderType" => $row['ordertype'],
-								"breakdown" => $row['breakdown'],
 							);
 						}
 
@@ -86,11 +84,11 @@
 							}
 
 							if (array_key_exists("heldID", $index)){
-								$orderButton .= "id='hID" . $index['heldID'] . "' onClick='openDetails(this.id)'>";
+								$orderButton .= "id='hID-" . $index['heldID'] . "' onClick='openDetails(this.id)'>";
 								$datetime = "HOLD " . $index['datetime'];
 							}
 							else {
-								$orderButton .= "id='oID" . $index['orderID'] . "' onClick='openDetails(this.id)'>";
+								$orderButton .= "id='oID-" . $index['orderID'] . "' onClick='openDetails(this.id)'>";
 								$datetime = "ORDER " . $index['datetime'];
 							}
 
@@ -103,7 +101,10 @@
 			
 			<div class="col-md-6">
 				<h3 class="text-center"><strong>Order Detail</strong></h3>
-				
+				<div class="kitchenOrderType"></div>
+				<div class="kitchenOrderDetail"></div>
+				<br/>
+				<div class="processKitchen pull-right"></div>
 			</div>
 		</div>
 	</body>

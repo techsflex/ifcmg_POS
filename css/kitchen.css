@@ -1,3 +1,7 @@
+.viewClass {
+	width: 100%;
+}
+
 .border-right {
 	border-width: thick;
 	border-color: black;
