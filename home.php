@@ -145,11 +145,7 @@
 			<div class="clear"></div>
 		</div>
 		<div class="divider"></div>
-		<form role="search">
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Search">
-			</div>
-		</form>
+
 		<ul class="nav menu">
 			<li class="active" id="dashboard"><a href="home.php"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
 			<li onClick="loadPage(this)"  id="new_order" value="2" ><a ><em class="fa fa-plus-square">&nbsp;</em> New Order</a></li>

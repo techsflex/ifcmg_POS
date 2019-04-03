@@ -71,7 +71,7 @@ if ($job != ''){
 		
 		else {
 			$orderID = (int)$conn->real_escape_string($id);
-			$query = "SELECT * FROM `orders` WHERE `orderID` = '$orderID'";
+			$query = "SELECT * FROM `orders` WHERE `orderID` = '$orderID' AND company_companyID='$companyID'";
 			$query = $conn->query($query);
 			
 			if (!$query){
@@ -79,21 +79,21 @@ if ($job != ''){
 				$message = 'Order Details Query Error';
 			}
 			else {
-				while ($company = $query->fetch_array()){
+				while ($company = $query->fetch_assoc()){
 					$mysql_data[] = array(
-						"orderID" => $company['orderID'],
+						"orderID" 			=> $company['orderID'],
 						"paymentType"		=> $company['paymentID'],
 						"orderType" 		=> $company['ordertype'],
 						"date"				=> $company['datetime'],
 						"sub_total"			=> $company['subtotal'],
-						"tax_rate"			=> $company['taxrate'],
+						"tax_rate"			=> $company['taxpaid'],
 						"discount_amount"	=> $company['discount'],
 						"grand_total" 		=> $company['grandtotal'],
 						"breakdown" 		=> $company['breakdown']
 					);
 				}
 				$result  = 'success';
-				$message = 'qOrder Details Extracted Successfully';
+				$message = 'Order Details Extracted Successfully';
 			}
 		}
 	}
