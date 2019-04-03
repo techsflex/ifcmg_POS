@@ -152,11 +152,13 @@
 			<li onClick="loadPage(this)"  id="add_products" value="1"  ><a ><em class="fa fa-bars">&nbsp;</em> All Products</a></li>
 			<li onClick="loadPage(this)"  id="order_log" value="3" ><a ><em class="fa fa-file">&nbsp;</em> Order Log</a></li>
 			<li onClick="loadPage(this)"  id="hold_order_log" value="4" ><a ><em class="fa fa-clock-o">&nbsp;</em> Hold Order Log</a></li>
+			<li onClick="loadPage(this)"  id="kitchen_status" value="7" ><a ><em class="fa fa-birthday-cake">&nbsp;</em> Kitchen Status</a></li>
 			<?php
 				if ($statusID === 4) {
-					echo '<li onClick="loadPage(this)"  id="company_setup" value="7" ><a ><em class="fa fa-cog">&nbsp;</em> Company Settings</a></li>';
+					echo '<li onClick="loadPage(this)"  id="company_setup" value="8" ><a ><em class="fa fa-cog">&nbsp;</em> Company Settings</a></li>';
 				}
 			?>
+			
 			<br><br>
 			
 			<?php
@@ -328,6 +330,10 @@
 		}
 		
 		else if(el.value==7){
+			$("#main_content").load("kitchenstatus.php");
+		}
+		
+		else if(el.value==8){
 			$("#main_content").load("companysetup.php");
 		}
 		

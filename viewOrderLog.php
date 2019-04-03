@@ -21,7 +21,6 @@
 	<head>
 		<title>jQuery SCRUD system</title>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=1000, initial-scale=1">
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 		<script charset="utf-8" src="//cdn.jsdelivr.net/jquery.validation/1.13.1/jquery.validate.min.js"></script>
 		<script charset="utf-8" src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>

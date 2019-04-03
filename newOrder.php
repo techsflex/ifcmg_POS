@@ -21,22 +21,11 @@
 <head>
 	<meta charset="utf-8">
 	<title>New Order</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<link href="css/font-awesome.min.css" rel="stylesheet">
-	<link href="css/datepicker3.css" rel="stylesheet">
-	<link href="css/styles.css" rel="stylesheet">
 
-	<link rel="stylesheet" href="./css/animate.min.css">
     <link rel="stylesheet" href="./css/customStyle.css">
-	<!--Custom Font-->
-	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 	
-	<script src="js/bootstrap.min.js"></script>  
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="/js/wow.min.js"></script>
-	<script>new WOW().init();</script>
-	
+	<script src="js/bootstrap.min.js"></script>  
 </head>
 
 <body>
