@@ -127,20 +127,18 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span></button>
-				<a class="navbar-brand" href="#"><span>POS</span>APP</a>
-				<a class="navbar-right" href="#"><?php echo $pos; ?>&nbsp;&nbsp;</a>
+				<p class="navbar-brand" href="#"><span>POS</span>APP</p>
+				
+				<p class="navbar-right" style="color: white;"; href="#"><?php echo $pos; ?>&nbsp;&nbsp;</p>
 			</div>
 		</div><!-- /.container-fluid -->
 	</nav>
 
 	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
 		<div class="profile-sidebar">
-			<div class="profile-userpic">
-				<img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt="">
-			</div>
 			<div class="profile-usertitle">
 				<div class="profile-usertitle-name"><?php echo $first_name . ' ' . $last_name ?></div>
-				<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+				<!--<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>-->
 			</div>
 			<div class="clear"></div>
 		</div>
@@ -160,7 +158,7 @@
 				}
 			?>
 			
-			<br><br>
+			<br/><br>
 			
 			<?php
 				include "config.php";
@@ -185,8 +183,7 @@
 				$conn->close();
 			?>
 			
-			<br>
-			<br>
+			<br/>
 			<!--<li>
 				<a class="text-center signout" style="background: rgba(255,0,0, 0.6);" href="logout.php">Logout</a>
 			</li>-->
