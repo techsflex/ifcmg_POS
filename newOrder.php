@@ -185,101 +185,6 @@
 							<span>&nbsp;&nbsp;  </span>
 							<button class="btn btn-danger" id="cancelOrder">Cancel Order</button></div>
 					</div>
-					
-					<!-- Modal-->
-					<div id="paymentModal" class="modal fade" role="dialog">
-						<div class="modal-dialog">
-							
-							<!-- Modal content-->
-							<div class="modal-content">
-								<div class="modal-header">Payment Advice</div>
-								
-								<div class="modal-body">
-									<strong>Payment Method:</strong>
-									<br>
-									<div id="myForm" style="float:right;">
-										<input class="radio-inline" type="radio" name="paymentOption" id="cash" value="Cash"> Cash
-										<input class="radio-inline" type="radio" name="paymentOption" id="card" value="Card"> Credit/Debit Card
-										<!--<input class="radio-inline" type="radio" name="paymentOption" id="cheque" value="cheque"> Cheque-->
-									</div>
-									
-								</div>
-								
-								<div class="panel panel-default">
-									<div class="panel-heading">Payment Summary</div>
-									
-									<div class="panel-body">
-										<table id="changeTable" name="changeTable" width="100%" cellspacing="5" cellpadding="20" class="bootstrap-table table-responsive">
-											<tbody>
-												<tr>
-													<td class="title">Order Total</td>
-													<td class="amount" id="orderTotal" name="orderTotal">0.00</td>
-												</tr>
-												
-												<!---<tr id="chequeNum">
-													<td class="title">Cheque Number</td>
-													<td class="amount" ><input id="chequeNumber" name="paymentType" type="number" value="0000000" style="width: 6em; text-align: right;" min="0" max="100"/></td>
-												</tr>
-												
-												<tr id="chequeBK">
-													<td class="title">Issuing Bank</td>
-													<td class="amount" ><input id="chequeBank" name="paymentType" type="text" value="Bank/Branch Name" style="width: 15em; text-align: right;" min="0" max="100"/></td>
-												</tr>-->
-												
-												<tr id="cashReceived">
-													<td class="title">Cash Tendered</td>
-													<td class="amount" ><input id="changeAmount" name="paymentType" type="number" value="0" style="width: 3em; text-align: right;" min="0" max="100"/></td>
-												</tr>
-											
-												<tr id="balanceAmount">
-													<td class="title">Balance</td>
-													<td class="amount" id="changeTotal" name="changeTotal"><strong>0.00</strong></td>
-												</tr>
-												
-											</tbody>
-										</table>
-									</div>
-								</div>
-								
-								<div class="modal-footer">
-									<button type="button" class="btn btn-success confirmOrder" data-dismiss="modal" value="processOrder"  onClick="funcProcessOrder()">Process Order</button>
-									<button type="button" class="btn btn-danger" data-dismiss="modal">Back/Cancel</button>
-									
-									<!---Add these lines: -->
-								</div>
-							</div> <!-- End Modal Content-->
-						</div>
-					</div>
-					<!-- End Modal-->
-					
-					<!------------------------------------------------------------------------------------------------------------------------->
-					<!--Start Hold Order Modal-->
-					<div id="holdOrderModal" class="modal fade" role="dialog">
-						<div class="modal-dialog">
-							<!-- Modal content-->
-							<div class="modal-content">
-								<div class="modal-header">HOLD ORDER</div>
-								
-								<div class="modal-body">
-									<p>Order is now on-hold</p>
-								</div>
-								
-								<div class="modal-footer">
-									<p style="float: left">Generate Provisional Receipt?</p>
-									<button type="button" class="btn btn-success holdOrder" data-dismiss="modal" value="No"  onClick="funcHoldOrder(this)">No</button>
-									<button type="button" class="btn btn-default holdOrder" data-dismiss="modal" value="Yes"   onClick="funcHoldOrder(this)">Yes</button>
-        							<!--<button type="button" class="btn btn-success holdOrder" id="holdOrder" name="holdOrder" data-dismiss="modal" value="No">No</button>
-									<button type="button" class="btn btn-default holdOrder" id="holdOrder" name="holdOrder" data-dismiss="modal" value="Yes">Yes</button>-->
-									
-									<!---Add these lines: -->
-								</div>
-							</div> <!-- End Modal Content-->
-						</div>
-					</div>
-					<!-- End Hold Order Modal-->
-					<!------------------------------------------------------------------------------------------------------------------------->
-
-					
 				</div>	<!-- END EXTRA SECTION --->
 			</div><!--END LEFT COL-->
 			
@@ -371,8 +276,93 @@
 			</div>
 	</div>	<!--/.main-->
 	
+	<!------------------------------------------------------------------------------------------------------------------>
+	<!-- Payment Modal-->
+	<div id="paymentModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
 
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">Payment Advice</div>
+
+				<div class="modal-body">
+					<strong>Payment Method:</strong>
+					<br>
+					<div id="myForm" style="float:right;">
+						<input class="radio-inline" type="radio" name="paymentOption" id="cash" value="Cash"> Cash
+						<input class="radio-inline" type="radio" name="paymentOption" id="card" value="Card"> Credit/Debit Card
+						<!--<input class="radio-inline" type="radio" name="paymentOption" id="cheque" value="cheque"> Cheque-->
+					</div>
+
+				</div>
+
+				<div class="panel panel-default">
+					<div class="panel-heading">Payment Summary</div>
+
+					<div class="panel-body">
+						<table id="changeTable" name="changeTable" width="100%" cellspacing="5" cellpadding="20" class="bootstrap-table table-responsive">
+							<tbody>
+								<tr>
+									<td class="title">Order Total</td>
+									<td class="amount" id="orderTotal" name="orderTotal">0.00</td>
+								</tr>
+
+								<!---<tr id="chequeNum">
+									<td class="title">Cheque Number</td>
+									<td class="amount" ><input id="chequeNumber" name="paymentType" type="number" value="0000000" style="width: 6em; text-align: right;" min="0" max="100"/></td>
+								</tr>
+
+								<tr id="chequeBK">
+									<td class="title">Issuing Bank</td>
+									<td class="amount" ><input id="chequeBank" name="paymentType" type="text" value="Bank/Branch Name" style="width: 15em; text-align: right;" min="0" max="100"/></td>
+								</tr>-->
+
+								<tr id="cashReceived">
+									<td class="title">Cash Tendered</td>
+									<td class="amount" ><input id="changeAmount" name="paymentType" type="number" value="0" style="width: 3em; text-align: right;" min="0" max="100"/></td>
+								</tr>
+
+								<tr id="balanceAmount">
+									<td class="title">Balance</td>
+									<td class="amount" id="changeTotal" name="changeTotal"><strong>0.00</strong></td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success confirmOrder" data-dismiss="modal" value="processOrder"  onClick="funcProcessOrder()">Process Order</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Back/Cancel</button>
+				</div>
+			</div> <!-- End Modal Content-->
+		</div>
+	</div>
+	<!-- End Payment Modal-->
 	
+	<!------------------------------------------------------------------------------------------------------------------>
+	<!--Start Hold Order Modal-->
+	<div id="holdOrderModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">HOLD ORDER</div>
+
+				<div class="modal-body">
+					<p>Order is now on-hold</p>
+				</div>
+
+				<div class="modal-footer">
+					<p style="float: left">Generate Provisional Receipt?</p>
+					<button type="button" class="btn btn-success holdOrder" data-dismiss="modal" value="No"  onClick="funcHoldOrder(this)">No</button>
+					<button type="button" class="btn btn-default holdOrder" data-dismiss="modal" value="Yes"   onClick="funcHoldOrder(this)">Yes</button>
+				</div>
+			</div> <!-- End Modal Content-->
+		</div>
+	</div>
+	<!-- End Hold Order Modal-->
+	<!------------------------------------------------------------------------------------------------------------------------->
  
 	<script>
 		var paymentType  = null;
