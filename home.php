@@ -153,6 +153,7 @@
 			<li onClick="loadPage(this)"  id="order_log" value="3" ><a ><em class="fa fa-file">&nbsp;</em> Order Log</a></li>
 			<li onClick="loadPage(this)"  id="hold_order_log" value="4" ><a ><em class="fa fa-clock-o">&nbsp;</em> Hold Order Log</a></li>
 			<li onClick="loadPage(this)"  id="kitchen_status" value="7" ><a ><em class="fa fa-birthday-cake">&nbsp;</em> Kitchen Status</a></li>
+			<li onClick="loadPage(this)"  id="pricehist_log" value="9" ><a><em class="fa fa-history">&nbsp;</em> Product Price History</a></li>
 			<?php
 				if ($statusID === 4) {
 					echo '<li onClick="loadPage(this)"  id="company_setup" value="8" ><a ><em class="fa fa-cog">&nbsp;</em> Company Settings</a></li>';
@@ -335,6 +336,10 @@
 		
 		else if(el.value==8){
 			$("#main_content").load("companysetup.php");
+		}
+		
+		else if(el.value==9){
+			$("#main_content").load("pricehistory.php");
 		}
 		
 	}
