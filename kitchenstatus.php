@@ -40,6 +40,8 @@
 						$kitchenList = array();
 						//search for this status
 						$kitchenstatus = 0; //0->Preparing, 1->Ready
+						//Count Number of rows
+						$numrows = 0;
 
 						//Extract from Placed Orders Table
 						$query = "SELECT `datetime`, `orderID`, `ordertype` FROM `orders` WHERE `kitchenstatus`='$kitchenstatus' AND company_companyID='$companyID' ORDER BY `datetime` ASC";
@@ -51,6 +53,9 @@
 								"orderType" => $row['ordertype'],
 							);
 						}
+						if ($query->num_rows > 0){
+							$numrows += $query->num_rows;
+						}
 
 						//Extract from Hold Orders Table
 						$query = "SELECT `datetime`, `heldID`, `ordertype` FROM `held` WHERE `kitchenstatus`='$kitchenstatus' AND company_companyID='$companyID' ORDER BY `datetime` ASC";
@@ -61,6 +66,10 @@
 								"heldID"   => $row['heldID'],
 								"orderType" => $row['ordertype'],
 							);
+						}
+						
+						if ($query->num_rows > 0){
+							$numrows += $query->num_rows;
 						}
 
 						usort($kitchenList, function($a, $b){
@@ -93,6 +102,9 @@
 							}
 
 							echo "$orderButton $datetime</button>";
+						}
+						if ($numrows === 0) {
+							echo "<p class='text-center' id='noOrders'>No pending orders</p>";
 						}
 						$conn->close();
 					?>

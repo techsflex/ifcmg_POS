@@ -78,4 +78,11 @@ $(document).ready(function(){
 			$("#main_content").load("kitchenstatus.php");
 		});
 	});
+	
+	setInterval(function(){
+		if(document.getElementById('noOrders')){
+		   $("#main_content").load("kitchenstatus.php");
+		   }
+	}, 15000);
+	
 });
