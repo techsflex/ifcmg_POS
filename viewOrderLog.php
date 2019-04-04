@@ -51,6 +51,7 @@
 										<th>Payment Method</th>
 										<th>Dine-In / Take-Away</th>
 										<th>Total Value</th>
+										<th>Kitchen Status</th>
 										<th>Functions</th>
 									</tr>
 								</thead>

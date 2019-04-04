@@ -70,6 +70,7 @@ $(document).ready(function(){
 			{ data: "kitchen" },      
 			{ data: "functions" }
 		],
+		"order": [[1, "desc"]],
 		"aoColumnDefs": [
 			{ "bSortable": false, "aTargets": [-1] }
 		],

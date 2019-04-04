@@ -48,13 +48,25 @@ if ($job != ''){
 				$functions .= '<li class="function_order_edit"><a data-id="'.$company['orderID'].'" data-name="'.$company['orderID'].'"><span title="View Details"><i class="fa fa-list"></i></span></a></li>';
 				$functions .= '<li class="function_order_print"><a data-id="'.$company['orderID'].'" data-name="'.$company['orderID'].'"><span title="Print"><i class="fa fa-print"></i></span></a></li>';
 				$functions .= '</ul></div>';
+				
+				if ((int)$company['kitchenstatus'] === 0) {
+					$kitchen = "Preparing";
+				}
+				elseif ((int)$company['kitchenstatus'] === 1) {
+					$kitchen = "Ready";
+				}
+				else {
+					$kitchen = "Rejected";
+				}
+				
 				$mysql_data[] = array(
-				  "orderID"    => $company['orderID'],
-				  "datetime"   => $company['datetime'],
-				  "paymentID"  => $company['paymentID'],
-				  "ordertype"  => $company['ordertype'],
-				  "grandtotal" => $company['grandtotal'],		
-				  "functions"  => $functions
+				  "orderID"    		=> $company['orderID'],
+				  "datetime"   		=> $company['datetime'],
+				  "paymentID"  		=> $company['paymentID'],
+				  "ordertype"  		=> $company['ordertype'],
+				  "grandtotal" 		=> $company['grandtotal'],
+				  "kitchenstatus" 	=> $kitchen,
+				  "functions"  		=> $functions
 				);
 			}
 			$result  = 'success';

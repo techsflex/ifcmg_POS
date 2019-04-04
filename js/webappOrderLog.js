@@ -67,9 +67,11 @@ $(document).ready(function(){
 			{ data: "datetime"},
 			{ data: "paymentID" },
 			{ data: "ordertype" },
-			{ data: "grandtotal" },      
+			{ data: "grandtotal" },
+			{ data: "kitchenstatus" },
 			{ data: "functions" }
 		],
+		"order": [[1, "desc"]],
 		"aoColumnDefs": [
 			{ "bSortable": false, "aTargets": [-1] }
 		],
