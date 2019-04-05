@@ -24,7 +24,12 @@ class PDF_AutoPrint extends PDF_JavaScript
     }
 }
 
+date_default_timezone_set('Asia/Karachi');
+$date = date('Y-m-d H:i:s');
+$id = NULL;
+$tempFilename = 'tempBarCode.png';
 $companyID = (int)$_SESSION['companyID'];
+
 $afterTax = number_format((float)$_SESSION['afterTax'], 2, '.',',');
 $subTotal = number_format((float)$_SESSION['subTotal'], 2, '.',',');
 $discountAmount = number_format((float)$_SESSION['discountAmount'], 2, '.',',');
@@ -36,14 +41,16 @@ $receiptFinal = $_SESSION['receiptFinal'];
 //
 $tableNum = $_SESSION['tableNum'];
 $orderType = $_SESSION['orderType'];
-$balance = number_format((int)$_SESSION['balance']);
-$cashTendered = number_format((int)$_SESSION['cashTender']);
 $paymentType = $_SESSION['paymentType'];
 
-date_default_timezone_set('Asia/Karachi');
-$date = date('Y-m-d H:i:s');
-$id = NULL;
-$tempFilename = 'tempBarCode.png';
+if ($receiptFinal === "No" && $receiptFinal === "No"){
+	$id = $_SESSION['orderID'];
+	$datetime = $_SESSION['orderDate'];
+}
+else {
+	$balance = number_format((int)$_SESSION['balance']);
+	$cashTendered = number_format((int)$_SESSION['cashTender']);
+}
 
 if ($receiptProv === "Yes" && $receiptFinal === "No") {
 	$receiptHeader = "PROVISIONAL RECEIPT";
@@ -117,6 +124,10 @@ else {
 $pdf->Cell(5, 1, '', 0, 0);	
 $pdf->Cell(30	,5,'Order Type: ' . $orderType,0,1,'R');
 
+if ($receiptFinal === "No" && $receiptFinal === "No"){
+	$pdf->Cell(60	,5, "Original Order Date: " . $datetime,0,1,'C');
+}
+
 $pdf->Cell(60	,0.1, '',1,1,'C');
 //invoice contents
 $pdf->SetFont('Arial','B',7);
@@ -158,15 +169,20 @@ $pdf->Cell(20	,5,$afterTax,0,1,'R');//end of line
 
 $pdf->Cell(60	,0.1, '',1,1,'C');
 
-$pdf->SetFont('Arial','B',7);
-if ($paymentType === "Cash"){
-	$pdf->Cell(15	,5,'',0,0);
-	$pdf->Cell(25	,5,'Cash Tendered (PKR)',0,0);
-	$pdf->Cell(20	,5,$cashTendered,0,1,'R');//end of line
-	
-	$pdf->Cell(15	,5,'',0,0);
-	$pdf->Cell(25	,5,'Change (PKR)',0,0);	
-	$pdf->Cell(20	,5,$balance,0,1,'R');//end of line
+if ($receiptFinal === "No" && $receiptFinal === "No"){
+	//Do Nothing
+}
+else {
+	$pdf->SetFont('Arial','B',7);
+	if ($paymentType === "Cash"){
+		$pdf->Cell(15	,5,'',0,0);
+		$pdf->Cell(25	,5,'Cash Tendered (PKR)',0,0);
+		$pdf->Cell(20	,5,$cashTendered,0,1,'R');//end of line
+
+		$pdf->Cell(15	,5,'',0,0);
+		$pdf->Cell(25	,5,'Change (PKR)',0,0);	
+		$pdf->Cell(20	,5,$balance,0,1,'R');//end of line
+	}
 }
 
 $pdf->SetFont('Arial','B',8);

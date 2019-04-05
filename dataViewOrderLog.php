@@ -101,7 +101,8 @@ if ($job != ''){
 						"tax_rate"			=> $company['taxpaid'],
 						"discount_amount"	=> $company['discount'],
 						"grand_total" 		=> $company['grandtotal'],
-						"breakdown" 		=> $company['breakdown']
+						"breakdown" 		=> $company['breakdown'],
+						"tablenum" 			=> $company['tablenum'],
 					);
 				}
 				$result  = 'success';
