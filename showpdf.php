@@ -28,11 +28,18 @@ $companyID = (int)$_SESSION['companyID'];
 $afterTax = number_format((float)$_SESSION['afterTax'], 2, '.',',');
 $subTotal = number_format((float)$_SESSION['subTotal'], 2, '.',',');
 $discountAmount = number_format((float)$_SESSION['discountAmount'], 2, '.',',');
-$grandTotal = number_format((float)$_SESSION['grandTotal'], 0, '.',',');
+$grandTotal = number_format((float)$_SESSION['grandTotal'], 2, '.',',');
 //$grandTotal = $_SESSION['grandTotal'];
 $breakdown =  $_SESSION['breakdown'];
 $receiptProv = $_SESSION['receiptProv'];
 $receiptFinal = $_SESSION['receiptFinal'];
+//
+$tableNum = $_SESSION['tableNum'];
+$orderType = $_SESSION['orderType'];
+$balance = number_format((int)$_SESSION['balance']);
+$cashTendered = number_format((int)$_SESSION['cashTender']);
+$paymentType = $_SESSION['paymentType'];
+
 date_default_timezone_set('Asia/Karachi');
 $date = date('Y-m-d H:i:s');
 $id = NULL;
@@ -42,7 +49,7 @@ if ($receiptProv === "Yes" && $receiptFinal === "No") {
 	$receiptHeader = "PROVISIONAL RECEIPT";
 }
 else if ($receiptProv === "No" && $receiptFinal === "Yes") {
-	$receiptHeader = "RECEIPT";
+	$receiptHeader = "ORDER RECEIPT";
 	$query = ("SELECT * FROM `orders` WHERE company_companyID='$companyID' ORDER BY `orderID` DESC LIMIT 1");
 	
 	if ($result=mysqli_query($conn, $query)) {
@@ -50,7 +57,7 @@ else if ($receiptProv === "No" && $receiptFinal === "Yes") {
 	 }
 }
 else {
-	$receiptHeader = "UNDEFINED HEADER";
+	$receiptHeader = "DUPLICATE RECEIPT";
 }
 
 $numItems = sizeof($breakdown);
@@ -60,7 +67,7 @@ $numItems = sizeof($breakdown);
 //default margin : 10mm each side
 //writable horizontal : 219-(10*2)=189mm
 
-$newHeight = ($numItems * 5) + 95;
+$newHeight = ($numItems * 5) + 110;
 $pdf = new PDF_AutoPrint('P','mm',array(80,$newHeight));
 
 $pdf->AddPage();
@@ -88,11 +95,28 @@ $pdf->Cell(60	,5,$receiptHeader,0,1,'C');
 
 if (!is_null($id)) {
 	$pdf->Cell(15	,5,'Invoice #',0,0);
-	$pdf->Cell(10	,5,$id,0,1);//end of line
+	$pdf->Cell(10	,5,$id,0,0);
+	
+	$pdf->Cell(5, 1, '', 0, 0);	
+	$pdf->Cell(30	,5,'Payment Method: ' . $paymentType,0,1,'R');
 }
 else {
-	$pdf->Cell(10	,1,'',0,1);//end of line	
+	$pdf->Cell(25	,1,'',0,1);
 }
+
+
+if ($tableNum === "0"){
+	$pdf->Cell(15	,5,'Table #',0,0);
+	$pdf->Cell(10	,5,'-None-',0,0);
+}
+else {
+	$pdf->Cell(15	,5, 'Table #',0,0);
+	$pdf->Cell(10	,5, $tableNum,0,0);
+}
+
+$pdf->Cell(5, 1, '', 0, 0);	
+$pdf->Cell(30	,5,'Order Type: ' . $orderType,0,1,'R');
+
 $pdf->Cell(60	,0.1, '',1,1,'C');
 //invoice contents
 $pdf->SetFont('Arial','B',7);
@@ -120,7 +144,6 @@ $pdf->Cell(60	,0.1, '',1,1,'C');
 //summary
 $pdf->Cell(15	,5,'',0,0);
 $pdf->Cell(25	,5,'Subtotal (PKR)',0,0);
-//$pdf->Cell(5	,5,'PKR',0,0);
 $pdf->Cell(20	,5,$subTotal,0,1,'R');//end of line
 
 $pdf->Cell(15	,5,'',0,0);
@@ -136,11 +159,26 @@ $pdf->Cell(20	,5,$afterTax,0,1,'R');//end of line
 $pdf->Cell(60	,0.1, '',1,1,'C');
 
 $pdf->SetFont('Arial','B',7);
+if ($paymentType === "Cash"){
+	$pdf->Cell(15	,5,'',0,0);
+	$pdf->Cell(25	,5,'Cash Tendered (PKR)',0,0);
+	$pdf->Cell(20	,5,$cashTendered,0,1,'R');//end of line
+	
+	$pdf->Cell(15	,5,'',0,0);
+	$pdf->Cell(25	,5,'Change (PKR)',0,0);	
+	$pdf->Cell(20	,5,$balance,0,1,'R');//end of line
+}
+
+$pdf->SetFont('Arial','B',8);
+
+$pdf->Cell(60	,0.1, '',1,1,'C');
+
 $pdf->Cell(15	,5,'',0,0);
 $pdf->Cell(25	,5,'Total (PKR)',0,0);
 //$pdf->Cell(5	,5,'PKR',1,0);
 $pdf->Cell(20	,5,$grandTotal,0,1,'R');//end of line
-$pdf->Cell(60	,0.1, '',1,1,'C');
+
+$pdf->Cell(60	,0.1, '','B',1,'C');
 
 $pdf->SetFont('Arial','',7);
 

@@ -53,7 +53,7 @@ if(isset( $subTotal )){
 	// ORDER STATUS = 2 MEANS ORDER WILL BE UPDATED LATER
 	elseif ($orderStatus == 2){
 		if($holdOrderId!=-1){		   
-			$queryString = "UPDATE `held` SET `subtotal`='$subTotal',`taxpaid`='$afterTax',`discount`='$discountAmount',`grandtotal`='$grandTotal',`breakdown`='$breakdown'`ordertype`='$orderType', `tablenum`='$tableNum' WHERE `heldID`='$holdOrderId' AND company_companyID='$companyID'"; 	
+			$queryString = "UPDATE `held` SET `subtotal`='$subTotal',`taxpaid`='$afterTax',`discount`='$discountAmount',`grandtotal`='$grandTotal',`breakdown`='$breakdown',`ordertype`='$orderType', `tablenum`='$tableNum' WHERE `heldID`='$holdOrderId' AND company_companyID='$companyID'"; 	
 			
 			if (mysqli_query($conn, $queryString)) {					 
 				$status = "success";

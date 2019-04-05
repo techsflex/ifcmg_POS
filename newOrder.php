@@ -395,7 +395,7 @@
 
 								<tr id="cashReceived">
 									<td class="title">Cash Tendered</td>
-									<td class="amount" ><input id="changeAmount" name="paymentType" type="number" value="0" style="width: 3em; text-align: right;" min="0" max="100"/></td>
+									<td class="amount" ><input id="changeAmount" name="paymentType" type="number" value="0" style="width: 3em; text-align: right;" min="0"/></td>
 								</tr>
 
 								<tr id="balanceAmount">
@@ -528,7 +528,7 @@
              });
 		
 		$('.customModal').click(function(e) {
-			e.preventDefault;
+			e.preventDefault();
 			$(".confirmOrder").hide();
 			$("#cashReceived").hide();
 			$("#balanceAmount").hide();
@@ -560,7 +560,7 @@
 						$(".confirmOrder").hide();
 						var paidAmount = $('#changeAmount').val();
 						var balance = parseFloat(orderGrandTotal) - paidAmount;
-						document.getElementById("changeTotal").innerHTML = balance;
+						document.getElementById("changeTotal").innerHTML = Math.abs(balance);
 						if (balance > 0){
 							document.getElementById("changeTotal").style.color = "red";
 						}
@@ -716,6 +716,7 @@
 	function processOrder(status){
 		
 		var orderType = $('input[name=orderType]:checked', '#orderType').val();
+		var paymentType = $('input[name=paymentOption]:checked', '#myForm').val();
 		var tableNum = $("#tableNum").val();
 		var discountAmount = $('#discountAmount').val();
 		var table = document.getElementById("myTable");
@@ -741,13 +742,18 @@
 	var subTotal = +document.getElementById("subTotal").innerHTML;
 	var afterTax = document.getElementById("afterTax").innerHTML;
 	var grandTotal = Math.round(parseFloat((document.getElementById("grandTotal").innerHTML).replace("/=","")));
+	var balance = document.getElementById("changeTotal").innerHTML;
+	var cashTendered = $("#changeAmount").val();
+	
 			
-	var jsonObj = {"subTotal":subTotal, "afterTax":afterTax, "discountAmount":discountAmount, "grandTotal":grandTotal, "breakdown":jsonArr, "receiptProv":receiptProv, "receiptFinal":receiptFinal};
+	var jsonObj = {"subTotal":subTotal, "afterTax":afterTax, "discountAmount":discountAmount, "grandTotal":grandTotal, "breakdown":jsonArr, "receiptProv":receiptProv, "receiptFinal":receiptFinal, "tableNum": tableNum, "orderType": orderType, "balance": balance, "cashTender": cashTendered, "paymentType": paymentType};
 			
 	var jsonArrString = JSON.stringify(jsonArr);
 		if(+grandTotal!=0){
 			var holdOrderId = document.getElementById("holdOrderId").value;
 			//alert(holdOrderId);
+			//alert("Table #: " + tableNum);
+			//alert("Order Type: " + orderType);
 			
 			$.ajax({
 				url: "generateReceipts.php",
@@ -767,6 +773,7 @@
 				dataType: "JSON",
 				success: function (jsonStr) {
 					//alert(JSON.stringify(jsonStr));
+					
 				}
 			});
 			
