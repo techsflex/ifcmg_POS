@@ -84,7 +84,7 @@
 								<label for="tableNum"><strong>Table Number:&nbsp;</strong></label>
 							</div>
 							<div class="col-sm-8">
-								<select class="tableNum" id="tableNum" name="tableNum">
+								<select id="tableNum" name="tableNum">
 									<?php
 									include 'config.php';
 									$query = "SELECT `numtables` FROM `company` WHERE `companyID`='$companyID'";
@@ -716,6 +716,7 @@
 	function processOrder(status){
 		
 		var orderType = $('input[name=orderType]:checked', '#orderType').val();
+		var tableNum = $("#tableNum").val();
 		var discountAmount = $('#discountAmount').val();
 		var table = document.getElementById("myTable");
 		//get product id, qty, subtotal, after tex, discount and grand total
@@ -760,7 +761,8 @@
 					"holdOrderId": holdOrderId,
 					"breakdown":jsonArrString,
 					"paymentType":paymentType,
-					"orderType":orderType
+					"orderType":orderType,
+					"tableNum": tableNum
 				},
 				dataType: "JSON",
 				success: function (jsonStr) {
