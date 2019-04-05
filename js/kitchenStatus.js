@@ -1,6 +1,6 @@
 function createButton(id, table){
 	"use strict";
-	var $input = $('<input type="button" class="btn btn-success" value="Order Ready" id="' + table + "-" + id +'"/>');
+	var $input = $('<input type="button" class="btn btn-success completeOrderButton" value="Order Ready" id="' + table + "-" + id +'"/>');
     $input.appendTo($(".processKitchen"));
 }
 
@@ -61,7 +61,7 @@ function openDetails(id) {
 
 $(document).ready(function(){
 	"use strict";
-	$(document).on("click", "input", function(e){		
+	$(document).on("click", ".completeOrderButton",function(e){
 		e.preventDefault();
 		e.stopImmediatePropagation();
 		//alert(this.id);
