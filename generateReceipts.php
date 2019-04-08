@@ -15,8 +15,13 @@ $breakdown = ($_POST["breakdown"]);
 $paymentType = $_POST["paymentType"];
 $orderType = $_POST["orderType"];
 $tableNum = (int)$_POST["tableNum"];
+$serverName = $_POST["serverName"];
 $holdOrderId = $_POST["holdOrderId"];
 //$breakdownString = JSON.stringify($breakdown);
+
+if ($_POST["serverName"] === "--Select Waiter--" || $_POST["serverName"] === "--No Waiters--"){
+	$serverName = "None";
+}
 
 $orderStatus = $_POST['status'];
 $queryStringHoldOrder="N/A";
@@ -24,7 +29,7 @@ $queryStringHoldOrder="N/A";
 if(isset( $subTotal )){
 	// ORDER STATUS = 1 MEANS PROCEED WITH ORDER - CONSIDER FINAL
 	if($orderStatus == 1){
-		$queryString = "INSERT INTO `orders`( `subtotal`, `taxpaid`, `discount`, `grandtotal`, `breakdown`, `paymentID`, `ordertype`, `tablenum`, `company_companyID`) VALUES ('$subTotal','$afterTax','$discountAmount','$grandTotal','$breakdown','$paymentType','$orderType','$tableNum','$companyID')"; 
+		$queryString = "INSERT INTO `orders`( `subtotal`, `taxpaid`, `discount`, `grandtotal`, `breakdown`, `paymentID`, `ordertype`, `tablenum`, `servername`, `company_companyID`) VALUES ('$subTotal', '$afterTax', '$discountAmount', '$grandTotal', '$breakdown', '$paymentType', '$orderType', '$tableNum', '$serverName', '$companyID')"; 
 		
 		if (mysqli_query($conn, $queryString)) {
 			$status = "success";
@@ -53,7 +58,7 @@ if(isset( $subTotal )){
 	// ORDER STATUS = 2 MEANS ORDER WILL BE UPDATED LATER
 	elseif ($orderStatus == 2){
 		if($holdOrderId!=-1){		   
-			$queryString = "UPDATE `held` SET `subtotal`='$subTotal',`taxpaid`='$afterTax',`discount`='$discountAmount',`grandtotal`='$grandTotal',`breakdown`='$breakdown',`ordertype`='$orderType', `tablenum`='$tableNum' WHERE `heldID`='$holdOrderId' AND company_companyID='$companyID'"; 	
+			$queryString = "UPDATE `held` SET `subtotal`='$subTotal',`taxpaid`='$afterTax',`discount`='$discountAmount',`grandtotal`='$grandTotal',`breakdown`='$breakdown',`ordertype`='$orderType', `tablenum`='$tableNum', `servername`='$serverName' WHERE `heldID`='$holdOrderId' AND company_companyID='$companyID'"; 	
 			
 			if (mysqli_query($conn, $queryString)) {					 
 				$status = "success";
@@ -65,7 +70,7 @@ if(isset( $subTotal )){
 			}
 		}
 		else {
-			$queryString = "INSERT INTO `held`( `subtotal`, `taxpaid`, `discount`, `grandtotal`, `breakdown`, `ordertype`, `tablenum`, `company_companyID`) VALUES ('$subTotal','$afterTax','$discountAmount','$grandTotal','$breakdown','$orderType', '$tableNum', '$companyID')"; 
+			$queryString = "INSERT INTO `held`( `subtotal`, `taxpaid`, `discount`, `grandtotal`, `breakdown`, `ordertype`, `tablenum`, `servername`, `company_companyID`) VALUES ('$subTotal','$afterTax','$discountAmount','$grandTotal','$breakdown','$orderType', '$tableNum', '$serverName', '$companyID')"; 
 			
 			if (mysqli_query($conn, $queryString)) {					 
 				$status = "success";

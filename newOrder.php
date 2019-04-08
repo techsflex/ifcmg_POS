@@ -143,11 +143,48 @@
 						<!--Identify Waiter for Order-->
 						<div class="row">
 							<div class="col-sm-4">
-								<label for="tableNum"><strong>Waiter Name:&nbsp;</strong></label>
+								<label for="waiterName"><strong>Waiter Name:&nbsp;</strong></label>
 							</div>
 							<div class="col-sm-8">
 								<select class="waiterName" id="waiterName" name="waiterName">
-									<?php?>
+									<?php
+									include "config.php";
+									$query = "SELECT * FROM server WHERE company_companyID='$companyID'";
+									$result = $conn->query($query);
+									if ($result->num_rows === 0) {
+										echo "<option value='0'>--No Waiters--</option>";
+									}
+									else if(isset($_GET['id'])) {
+										$id = (int)$conn->real_escape_string($_GET['id']);
+										$query = "SELECT `servername` FROM `held` WHERE `heldID`='$holdOrderId' AND company_companyID='$companyID'";
+										$query = $conn->query($query);
+										while ($row = $query->fetch_assoc()){
+											$serverName = $row['servername'];	
+										}
+										
+										echo "<option value='0'>--Select Waiter--</option>";
+										while ($row = $result->fetch_assoc()){
+											$serID = $row['serverID'];
+											$sername = $row['servername'];
+											if ($sername === $serverName){
+												echo "<option value='$serID' selected>$sername</option>";
+											}
+											else {
+												echo "<option value='$serID'>$sername</option>";
+											}
+										}
+										
+									}
+									else {
+										echo "<option value='0'>--Select Waiter--</option>";
+										while ($row = $result->fetch_assoc()) {
+											$serID = $row["serverID"];
+											$sername = $row["servername"];
+											echo "<option value='$serID'>$sername</option>";
+										}
+									}
+									$conn->close();
+									?>
 								</select>
 							</div>
 						</div>
@@ -718,10 +755,10 @@
 		var orderType = $('input[name=orderType]:checked', '#orderType').val();
 		var paymentType = $('input[name=paymentOption]:checked', '#myForm').val();
 		var tableNum = $("#tableNum").val();
+		var serverName = $("#waiterName option:selected").text();
 		var discountAmount = $('#discountAmount').val();
 		var table = document.getElementById("myTable");
 		//get product id, qty, subtotal, after tex, discount and grand total
-	
 	
 		
 		var jsonArr = [];
@@ -746,7 +783,7 @@
 	var cashTendered = $("#changeAmount").val();
 	
 			
-	var jsonObj = {"subTotal":subTotal, "afterTax":afterTax, "discountAmount":discountAmount, "grandTotal":grandTotal, "breakdown":jsonArr, "receiptProv":receiptProv, "receiptFinal":receiptFinal, "tableNum": tableNum, "orderType": orderType, "balance": balance, "cashTender": cashTendered, "paymentType": paymentType};
+	var jsonObj = {"subTotal":subTotal, "afterTax":afterTax, "discountAmount":discountAmount, "grandTotal":grandTotal, "breakdown":jsonArr, "receiptProv":receiptProv, "receiptFinal":receiptFinal, "tableNum": tableNum, "orderType": orderType, "balance": balance, "cashTender": cashTendered, "paymentType": paymentType, "serverName": serverName};
 			
 	var jsonArrString = JSON.stringify(jsonArr);
 		if(+grandTotal!=0){
@@ -768,7 +805,8 @@
 					"breakdown":jsonArrString,
 					"paymentType":paymentType,
 					"orderType":orderType,
-					"tableNum": tableNum
+					"tableNum": tableNum,
+					"serverName": serverName,
 				},
 				dataType: "JSON",
 				success: function (jsonStr) {

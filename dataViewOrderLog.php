@@ -103,6 +103,7 @@ if ($job != ''){
 						"grand_total" 		=> $company['grandtotal'],
 						"breakdown" 		=> $company['breakdown'],
 						"tablenum" 			=> $company['tablenum'],
+						"serverName"		=> $company['servername'],
 					);
 				}
 				$result  = 'success';
