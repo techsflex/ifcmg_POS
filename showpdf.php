@@ -42,8 +42,7 @@ $receiptFinal = $_SESSION['receiptFinal'];
 $tableNum = $_SESSION['tableNum'];
 $orderType = $_SESSION['orderType'];
 $paymentType = $_SESSION['paymentType'];
-$servername = $_SESSION['serverName'];
-	
+
 if ($receiptFinal === "No" && $receiptFinal === "No"){
 	$id = $_SESSION['orderID'];
 	$datetime = $_SESSION['orderDate'];
@@ -115,7 +114,7 @@ else {
 
 if ($tableNum === "0"){
 	$pdf->Cell(15	,5,'Table #',0,0);
-	$pdf->Cell(10	,5,'None',0,0);
+	$pdf->Cell(10	,5,'-None-',0,0);
 }
 else {
 	$pdf->Cell(15	,5, 'Table #',0,0);

@@ -253,8 +253,6 @@ $(document).ready(function(){
 				  				"receiptProv":		"No",
 				  				"receiptFinal":		"No",
 								"tableNum": 		output.data[0].tablenum,
-				  				"serverName": 		output.data[0].serverName,
-				  
 			  					};
 			  var newStringJSON = JSON.stringify(newJSON);
 			  hide_loading_message();
