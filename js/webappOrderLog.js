@@ -244,17 +244,21 @@ $(document).ready(function(){
 				  				"orderID":			output.data[0].orderID,
 				  				"orderDate": 		output.data[0].date,				
 			  					"subTotal":			output.data[0].sub_total,
-			  					"taxRate":			output.data[0].tax_rate,
-			  					"discount":			output.data[0].discount_amount,
+			  					"afterTax":			output.data[0].tax_rate,
+			  					"discountAmount":	output.data[0].discount_amount,
 			  					"grandTotal":		output.data[0].grand_total,
 			  					"breakdown":		receiptBreakdown,
 			  					"paymentType":		output.data[0].paymentType,
-			  					"orderType":		output.data[0].orderType
+			  					"orderType":		output.data[0].orderType,
+				  				"receiptProv":		"No",
+				  				"receiptFinal":		"No",
+								"tableNum": 		output.data[0].tablenum,
 			  					};
 			  var newStringJSON = JSON.stringify(newJSON);
 			  hide_loading_message();
 			  show_message('Duplicate receipt printing successful', 'success');
-			  window.open("createDuplicateReceipt.php?data="+newStringJSON, '_blank');
+			  //window.open("createDuplicateReceipt.php?data="+newStringJSON, '_blank');
+			  window.open("createpdf.php?data="+newStringJSON, '_blank');
 		  }
 	  });
 	  request.fail(function(jqXHR, textStatus){

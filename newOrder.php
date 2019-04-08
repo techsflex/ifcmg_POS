@@ -45,40 +45,116 @@
 					</div>
 					
 					<div class="panel-body articles-container table-responsive">
-						<input type="checkbox" onClick="toggle(this)"> Select All
-						
-						<div class="orderType" id="orderType" style="float:right;">
-							<!--PHP TESTING AREA START-->
-							<?php
-							if(isset($_GET['id'])) {
-								include 'config.php';
-								$holdOrderId = (int)$conn->real_escape_string($_GET['id']);
-								$queryString = "SELECT `ordertype` FROM `held` WHERE `heldID`='$holdOrderId'";
-								$query = $conn->query($queryString);
-								while ($row = $query->fetch_assoc()) {
-									$orderType = $row['ordertype'];
+						<div class="row">
+							<div class="orderType" id="orderType" style="float:right;">
+								<!--PHP TESTING AREA START-->
+								<?php
+								if(isset($_GET['id'])) {
+									include 'config.php';
+									$holdOrderId = (int)$conn->real_escape_string($_GET['id']);
+									$queryString = "SELECT `ordertype` FROM `held` WHERE `heldID`='$holdOrderId'";
+									$query = $conn->query($queryString);
+									while ($row = $query->fetch_assoc()) {
+										$orderType = $row['ordertype'];
+									}
+
+									if($orderType == "Dine-In") {
+										echo "<input type='radio' name='orderType' id='dinein' value='Dine-In' checked='checked'> Dine-In&nbsp;&nbsp;";
+										echo "<input type='radio' name='orderType' id='takeaway' value='Take-Away'> Take-Away";
+									}
+									else {
+										echo "<input type='radio' name='orderType' id='dinein' value='Dine-In'> Dine-In&nbsp;&nbsp;";
+										echo "<input type='radio' name='orderType' id='takeaway' value='Take-Away' checked='checked'> Take-Away";
+									}
+									$conn->close();	
 								}
-									
-								if($orderType == "Dine-In") {
+
+								else {
 									echo "<input type='radio' name='orderType' id='dinein' value='Dine-In' checked='checked'> Dine-In&nbsp;&nbsp;";
 									echo "<input type='radio' name='orderType' id='takeaway' value='Take-Away'> Take-Away";
 								}
-								else {
-									echo "<input type='radio' name='orderType' id='dinein' value='Dine-In'> Dine-In&nbsp;&nbsp;";
-									echo "<input type='radio' name='orderType' id='takeaway' value='Take-Away' checked='checked'> Take-Away";
-								}
-								$conn->close();	
-							}
-							
-							else {
-								echo "<input type='radio' name='orderType' id='dinein' value='Dine-In' checked='checked'> Dine-In&nbsp;&nbsp;";
-								echo "<input type='radio' name='orderType' id='takeaway' value='Take-Away'> Take-Away";
-							}
-							?>
-							<!--PHP TESTING AREA END-->
+								?>
+								<!--PHP TESTING AREA END-->
+							</div>
 						</div>
-						<br/>
 						
+						<!--Identify Table for Order-->
+						<div class="row">
+							<div class="col-sm-4">
+								<label for="tableNum"><strong>Table Number:&nbsp;</strong></label>
+							</div>
+							<div class="col-sm-8">
+								<select id="tableNum" name="tableNum">
+									<?php
+									include 'config.php';
+									$query = "SELECT `numtables` FROM `company` WHERE `companyID`='$companyID'";
+									$result = $conn->query($query);
+									while ($row = $result->fetch_assoc()){
+										$numTables = $row['numtables'];
+									}
+
+									if(isset($_GET['id'])) {
+										$holdOrderId = (int)$conn->real_escape_string($_GET['id']);
+										$query = "SELECT `tablenum` FROM `held` WHERE `heldID`='$holdOrderId' AND company_companyID='$companyID'";
+										$result = $conn->query($query);
+										while ($row = $result->fetch_assoc()) {
+											$tableNum = $row['tablenum'];
+										}
+
+										if($tableNum === "0" && $numTables === "0") {
+											echo "<option value='0'>--No Tables Defined--</option>";
+										}
+										else {
+											for($i=0; $i<=$numTables; $i++){
+												if ($i === 0 && $tableNum === "0") {
+													echo "<option value='$i' selected>--No Table Identified--</option>";
+												}
+												else if ($i===0){
+													echo "<option value='$i'>--No Table Identified--</option>";
+												}
+												else if ($i === (int)$tableNum){
+													echo "<option value='$i' selected>Table $i</option>";
+												}
+												else {
+													echo "<option value='$i'>Table $i</option>";
+												}
+											}
+										}
+									}
+
+									else {
+										if ($numTables === "0"){
+											echo "<option value='0' selected>--No Tables Defined--</option>";
+										}
+										else {
+											echo "<option value='0' selected>--No Table Identified--</option>";
+											for($i=1; $i<=$numTables; $i++){
+												echo "<option value='$i'>Table $i</option>";
+											}
+										}
+									}
+									$conn->close();	
+									?>
+								</select>
+							</div>
+						</div>
+						<!--END Identify Table for Order-->
+						
+						<!--Identify Waiter for Order-->
+						<div class="row">
+							<div class="col-sm-4">
+								<label for="tableNum"><strong>Waiter Name:&nbsp;</strong></label>
+							</div>
+							<div class="col-sm-8">
+								<select class="waiterName" id="waiterName" name="waiterName">
+									<?php?>
+								</select>
+							</div>
+						</div>
+						<!--END Identify Table for Order-->
+						
+						<br/>
+						<input type="checkbox" onClick="toggle(this)"> Select All
 						<table id="myTable" class="tableClass bootstrap-table table-bordered table-hover" >
 							<thead>
 								<tr>
@@ -319,7 +395,7 @@
 
 								<tr id="cashReceived">
 									<td class="title">Cash Tendered</td>
-									<td class="amount" ><input id="changeAmount" name="paymentType" type="number" value="0" style="width: 3em; text-align: right;" min="0" max="100"/></td>
+									<td class="amount" ><input id="changeAmount" name="paymentType" type="number" value="0" style="width: 3em; text-align: right;" min="0"/></td>
 								</tr>
 
 								<tr id="balanceAmount">
@@ -452,7 +528,7 @@
              });
 		
 		$('.customModal').click(function(e) {
-			e.preventDefault;
+			e.preventDefault();
 			$(".confirmOrder").hide();
 			$("#cashReceived").hide();
 			$("#balanceAmount").hide();
@@ -484,7 +560,7 @@
 						$(".confirmOrder").hide();
 						var paidAmount = $('#changeAmount').val();
 						var balance = parseFloat(orderGrandTotal) - paidAmount;
-						document.getElementById("changeTotal").innerHTML = balance;
+						document.getElementById("changeTotal").innerHTML = Math.abs(balance);
 						if (balance > 0){
 							document.getElementById("changeTotal").style.color = "red";
 						}
@@ -640,6 +716,8 @@
 	function processOrder(status){
 		
 		var orderType = $('input[name=orderType]:checked', '#orderType').val();
+		var paymentType = $('input[name=paymentOption]:checked', '#myForm').val();
+		var tableNum = $("#tableNum").val();
 		var discountAmount = $('#discountAmount').val();
 		var table = document.getElementById("myTable");
 		//get product id, qty, subtotal, after tex, discount and grand total
@@ -664,13 +742,18 @@
 	var subTotal = +document.getElementById("subTotal").innerHTML;
 	var afterTax = document.getElementById("afterTax").innerHTML;
 	var grandTotal = Math.round(parseFloat((document.getElementById("grandTotal").innerHTML).replace("/=","")));
+	var balance = document.getElementById("changeTotal").innerHTML;
+	var cashTendered = $("#changeAmount").val();
+	
 			
-	var jsonObj = {"subTotal":subTotal, "afterTax":afterTax, "discountAmount":discountAmount, "grandTotal":grandTotal, "breakdown":jsonArr, "receiptProv":receiptProv, "receiptFinal":receiptFinal};
+	var jsonObj = {"subTotal":subTotal, "afterTax":afterTax, "discountAmount":discountAmount, "grandTotal":grandTotal, "breakdown":jsonArr, "receiptProv":receiptProv, "receiptFinal":receiptFinal, "tableNum": tableNum, "orderType": orderType, "balance": balance, "cashTender": cashTendered, "paymentType": paymentType};
 			
 	var jsonArrString = JSON.stringify(jsonArr);
 		if(+grandTotal!=0){
 			var holdOrderId = document.getElementById("holdOrderId").value;
 			//alert(holdOrderId);
+			//alert("Table #: " + tableNum);
+			//alert("Order Type: " + orderType);
 			
 			$.ajax({
 				url: "generateReceipts.php",
@@ -684,11 +767,13 @@
 					"holdOrderId": holdOrderId,
 					"breakdown":jsonArrString,
 					"paymentType":paymentType,
-					"orderType":orderType
+					"orderType":orderType,
+					"tableNum": tableNum
 				},
 				dataType: "JSON",
 				success: function (jsonStr) {
 					//alert(JSON.stringify(jsonStr));
+					
 				}
 			});
 			

@@ -191,6 +191,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `grandtotal` FLOAT NOT NULL,
   `breakdown` VARCHAR(10000) NOT NULL,
   `kitchenstatus` INT NOT NULL DEFAULT 0,
+  `tablenum` INT NOT NULL DEFAULT 0,
   `company_companyID` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`orderID`),
   CONSTRAINT `fk_orders_company1`
@@ -213,7 +214,9 @@ CREATE TABLE IF NOT EXISTS `held` (
   `grandtotal` FLOAT NOT NULL,
   `breakdown` VARCHAR(10000) NOT NULL,
   `kitchenstatus` INT NOT NULL DEFAULT 0,
+  `tablenum` INT NOT NULL DEFAULT 0,
   `company_companyID` INT UNSIGNED NOT NULL,
+  
   PRIMARY KEY (`heldID`),
   CONSTRAINT `fk_held_company1`
     FOREIGN KEY (`company_companyID`)
