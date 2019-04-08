@@ -128,7 +128,7 @@ $pdf->Cell(30	,5,'Order Type: ' . $orderType,0,1,'R');
 $pdf->Cell(15	,5,'Waiter: ',0,0);
 $pdf->Cell(10	,5,$servername,0,1);
 
-if ($receiptFinal === "No" && $receiptFinal === "No"){
+if ($receiptProv === "No" && $receiptFinal === "No"){
 	$pdf->Cell(60	,5, "Original Order Date: " . $datetime,0,1,'C');
 }
 
