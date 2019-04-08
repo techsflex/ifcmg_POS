@@ -12,6 +12,7 @@ $_SESSION['receiptFinal'] = $allData['receiptFinal'];
 $_SESSION['tableNum'] = $allData['tableNum'];
 $_SESSION['orderType'] = $allData['orderType'];
 $_SESSION['paymentType'] = $allData['paymentType'];
+$_SESSION['serverName'] = $allData['serverName'];
 
 if ($allData['receiptFinal'] === "No" && $allData['receiptFinal'] === "No"){
 	$_SESSION['orderID'] = $allData['orderID'];

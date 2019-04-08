@@ -192,6 +192,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `breakdown` VARCHAR(10000) NOT NULL,
   `kitchenstatus` INT NOT NULL DEFAULT 0,
   `tablenum` INT NOT NULL DEFAULT 0,
+  `servername` VARCHAR(45) NOT NULL DEFAULT 'None',
   `company_companyID` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`orderID`),
   CONSTRAINT `fk_orders_company1`
@@ -215,6 +216,7 @@ CREATE TABLE IF NOT EXISTS `held` (
   `breakdown` VARCHAR(10000) NOT NULL,
   `kitchenstatus` INT NOT NULL DEFAULT 0,
   `tablenum` INT NOT NULL DEFAULT 0,
+  `servername` VARCHAR(45) NOT NULL DEFAULT 'None',
   `company_companyID` INT UNSIGNED NOT NULL,
   
   PRIMARY KEY (`heldID`),
