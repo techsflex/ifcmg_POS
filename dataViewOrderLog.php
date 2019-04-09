@@ -104,6 +104,7 @@ if ($job != ''){
 						"breakdown" 		=> $company['breakdown'],
 						"tablenum" 			=> $company['tablenum'],
 						"serverName"		=> $company['servername'],
+						"custNum"			=> $company['customer_custID'],
 					);
 				}
 				$result  = 'success';

@@ -254,10 +254,11 @@ $(document).ready(function(){
 				  				"receiptFinal":		"No",
 								"tableNum": 		output.data[0].tablenum,
 				  				"serverName": 		output.data[0].serverName,
-				  
+				  				"custNum": 			output.data[0].custNum,
 			  					};
 			  var newStringJSON = JSON.stringify(newJSON);
 			  hide_loading_message();
+			  //alert(newJSON.custNum);
 			  show_message('Duplicate receipt printing successful', 'success');
 			  //window.open("createDuplicateReceipt.php?data="+newStringJSON, '_blank');
 			  window.open("createpdf.php?data="+newStringJSON, '_blank');

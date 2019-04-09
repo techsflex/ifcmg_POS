@@ -194,12 +194,18 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `tablenum` INT NOT NULL DEFAULT 0,
   `servername` VARCHAR(45) NOT NULL DEFAULT 'None',
   `company_companyID` INT UNSIGNED NOT NULL,
+  `customer_custID` INT UNSIGNED NULL,
   PRIMARY KEY (`orderID`),
   CONSTRAINT `fk_orders_company1`
     FOREIGN KEY (`company_companyID`)
     REFERENCES `company` (`companyID`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_orders_customer1`
+	FOREIGN KEY (`customer_custID`)
+	REFERENCES `customer` (`custID`)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------
@@ -218,13 +224,19 @@ CREATE TABLE IF NOT EXISTS `held` (
   `tablenum` INT NOT NULL DEFAULT 0,
   `servername` VARCHAR(45) NOT NULL DEFAULT 'None',
   `company_companyID` INT UNSIGNED NOT NULL,
+  `customer_custID` INT UNSIGNED NULL,
   
   PRIMARY KEY (`heldID`),
   CONSTRAINT `fk_held_company1`
     FOREIGN KEY (`company_companyID`)
     REFERENCES `company` (`companyID`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_held_customer1`
+	FOREIGN KEY (`customer_custID`)
+	REFERENCES `customer` (`custID`)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------

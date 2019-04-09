@@ -43,6 +43,7 @@ $tableNum = $_SESSION['tableNum'];
 $orderType = $_SESSION['orderType'];
 $paymentType = $_SESSION['paymentType'];
 $servername = $_SESSION['serverName'];
+$custNum = $_SESSION['custNum'];
 	
 if ($receiptFinal === "No" && $receiptFinal === "No"){
 	$id = $_SESSION['orderID'];
@@ -100,6 +101,23 @@ $pdf->Cell(10, 1, '', 0, 1);//end of line
 
 $pdf->Cell(60	,5,$receiptHeader,0,1,'C');
 
+if ($custNum != "0" || $custNum != "null") {
+	$custID = (int)$custNum;
+	$query = "SELECT * FROM customer WHERE custID='$custID' AND company_companyID='$companyID'";
+	$result = $conn->query($query);
+	
+	while ($row = $result->fetch_assoc()){
+		$pdf->Cell(15	,5,'Customer Name: ',0,0);
+		$pdf->Cell(45	,5,$row['custname'],0,1, 'R');
+		
+		$pdf->Cell(15	,5,'Customer Address: ',0,0);
+		$pdf->Cell(45	,5,$row['custaddress'],0,1, 'R');
+		
+		$pdf->Cell(15	,5,'Customer Phone: ',0,0);
+		$pdf->Cell(45	,5,$row['custphone'],0,1, 'R');
+	}
+	$pdf->Cell(15	,1,'',0,1);
+}
 
 if (!is_null($id)) {
 	$pdf->Cell(15	,5,'Invoice #',0,0);
@@ -111,7 +129,6 @@ if (!is_null($id)) {
 else {
 	$pdf->Cell(25	,1,'',0,1);
 }
-
 
 if ($tableNum === "0"){
 	$pdf->Cell(15	,5,'Table #',0,0);

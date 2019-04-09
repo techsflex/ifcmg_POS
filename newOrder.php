@@ -156,7 +156,7 @@
 									}
 									else if(isset($_GET['id'])) {
 										$id = (int)$conn->real_escape_string($_GET['id']);
-										$query = "SELECT `servername` FROM `held` WHERE `heldID`='$holdOrderId' AND company_companyID='$companyID'";
+										$query = "SELECT `servername` FROM `held` WHERE `heldID`='$id' AND company_companyID='$companyID'";
 										$query = $conn->query($query);
 										while ($row = $query->fetch_assoc()){
 											$serverName = $row['servername'];	
@@ -188,7 +188,58 @@
 								</select>
 							</div>
 						</div>
-						<!--END Identify Table for Order-->
+						<!--END Identify Waiter for Order-->
+						
+						<!--Identify Customer for Order-->
+						<div class="row">
+							<div class="col-sm-4">
+								<label for="custName"><strong>Customer:&nbsp;</strong></label>
+							</div>
+							<div class="col-sm-8">
+								<select class="custName" id="custName" name="custName">
+									<?php
+									include "config.php";
+									$query = "SELECT * FROM customer WHERE company_companyID='$companyID' ORDER BY `custname` ASC";
+									$result = $conn->query($query);
+									if ($result->num_rows === 0) {
+										echo "<option value='0'>--No Customers--</option>";
+									}
+									else if(isset($_GET['id'])) {
+										$id = (int)$conn->real_escape_string($_GET['id']);
+										$query = "SELECT `customer_custID` FROM held WHERE `heldID`='$id' AND `company_companyID`='$companyID'";
+										
+										$query = $conn->query($query);
+										while ($row = $query->fetch_assoc()){
+											$customer_custID = $row['customer_custID'];	
+										}
+										
+										echo "<option value='0'>--Select Customer--</option>";
+										while ($row = $result->fetch_assoc()){
+											$cusID = $row['custID'];
+											$cusname = $row['custname'];
+											if ($cusID === $customer_custID){
+												echo "<option value='$cusID' selected>$cusname</option>";
+											}
+											else {
+												echo "<option value='$cusID'>$cusname</option>";
+											}
+										}
+										
+									}
+									else {
+										echo "<option value='0'>--Select Customer--</option>";
+										while ($row = $result->fetch_assoc()) {
+											$cusID = $row["custID"];
+											$cusname = $row["custname"];
+											echo "<option value='$cusID'>$cusname</option>";
+										}
+									}
+									$conn->close();
+									?>
+								</select>
+							</div>
+						</div>
+						<!--END Identify Waiter for Order-->
 						
 						<br/>
 						<input type="checkbox" onClick="toggle(this)"> Select All
@@ -756,8 +807,10 @@
 		var paymentType = $('input[name=paymentOption]:checked', '#myForm').val();
 		var tableNum = $("#tableNum").val();
 		var serverName = $("#waiterName option:selected").text();
+		var custNum = $("#custName").val();
 		var discountAmount = $('#discountAmount').val();
 		var table = document.getElementById("myTable");
+		//alert(custNum);
 		//get product id, qty, subtotal, after tex, discount and grand total
 	
 		
@@ -783,7 +836,7 @@
 	var cashTendered = $("#changeAmount").val();
 	
 			
-	var jsonObj = {"subTotal":subTotal, "afterTax":afterTax, "discountAmount":discountAmount, "grandTotal":grandTotal, "breakdown":jsonArr, "receiptProv":receiptProv, "receiptFinal":receiptFinal, "tableNum": tableNum, "orderType": orderType, "balance": balance, "cashTender": cashTendered, "paymentType": paymentType, "serverName": serverName};
+	var jsonObj = {"subTotal":subTotal, "afterTax":afterTax, "discountAmount":discountAmount, "grandTotal":grandTotal, "breakdown":jsonArr, "receiptProv":receiptProv, "receiptFinal":receiptFinal, "tableNum": tableNum, "orderType": orderType, "balance": balance, "cashTender": cashTendered, "paymentType": paymentType, "serverName": serverName, "custNum": custNum};
 			
 	var jsonArrString = JSON.stringify(jsonArr);
 		if(+grandTotal!=0){
@@ -807,6 +860,7 @@
 					"orderType":orderType,
 					"tableNum": tableNum,
 					"serverName": serverName,
+					"custNum": custNum,
 				},
 				dataType: "JSON",
 				success: function (jsonStr) {
