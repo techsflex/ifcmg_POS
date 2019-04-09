@@ -11,7 +11,7 @@ INSERT INTO `cat` (`catID`, `catname`, `company_companyID`) VALUES
 (6, 'Burger', 2),
 (7, 'Noodles', 2);
 
-INSERT INTO `held` (`heldID`, `ordertype`, `datetime`, `subtotal`, `taxpaid`, `discount`, `grandtotal`, `breakdown`, `kitchenstatus`, `company_companyID`) VALUES
+/*INSERT INTO `held` (`heldID`, `ordertype`, `datetime`, `subtotal`, `taxpaid`, `discount`, `grandtotal`, `breakdown`, `kitchenstatus`, `company_companyID`) VALUES
 (1, 'Dine-In', '2018-05-24 01:39:54', 685, 787.75, 0, 788, '[{\"productCode\":\"MCL005\",\"productName\":\"Thai Cashew Nut Chicken\",\"productPrice\":\"685.00\",\"productQuantity\":\"1\",\"productTotal\":\"685.00\"}]', 0, 1),
 (2, 'Dine-In', '2018-07-01 05:40:16', 915, 1052.25, 0, 1052, '[{\"productCode\":\"DES001\",\"productName\":\"Italian Bread &amp; Butter Pudding\",\"productPrice\":\"490.00\",\"productQuantity\":\"1\",\"productTotal\":\"490.00\"},{\"productCode\":\"SKU007\",\"productName\":\"Chicken Cigars\",\"productPrice\":\"425.00\",\"productQuantity\":\"1\",\"productTotal\":\"425.00\"}]', 0, 1),
 (3, 'Take-Away', '2018-09-15 17:13:30', 875, 1006.25, 0, 1006, '[{\"productCode\":\"MBL001\",\"productName\":\"Beef Steak in Mushroom Sauce\",\"productPrice\":\"875.00\",\"productQuantity\":\"1\",\"productTotal\":\"875.00\"}]', 1, 1),
@@ -26,7 +26,7 @@ INSERT INTO `orders` (`orderID`, `paymentID`, `ordertype`, `datetime`, `subtotal
 (5, 'Card', 'Dine-In', '2018-07-15 01:41:52', 5245, 6031.75, 0, 6032, '[{\"productCode\":\"SKU001\",\"productName\":\"Grilled Calamari\",\"productPrice\":\"395.00\",\"productQuantity\":\"1\",\"productTotal\":\"395.00\"},{\"productCode\":\"SKU003\",\"productName\":\"Crispy Chicken Wings\",\"productPrice\":\"410.00\",\"productQuantity\":\"1\",\"productTotal\":\"410.00\"},{\"productCode\":\"SKU004\",\"productName\":\"Artichoke and Spinach Dip\",\"productPrice\":\"510.00\",\"productQuantity\":\"1\",\"productTotal\":\"510.00\"},{\"productCode\":\"MCL003\",\"productName\":\"Tarragon Chicken\",\"productPrice\":\"625.00\",\"productQuantity\":\"1\",\"productTotal\":\"625.00\"},{\"productCode\":\"MBL002\",\"productName\":\"Beef Steak with Pepper Sauce\",\"productPrice\":\"825.00\",\"productQuantity\":\"1\",\"productTotal\":\"825.00\"},{\"productCode\":\"MBL001\",\"productName\":\"Beef Steak in Mushroom Sauce\",\"productPrice\":\"875.00\",\"productQuantity\":\"1\",\"productTotal\":\"875.00\"},{\"productCode\":\"MCL004\",\"productName\":\"Morrocan Chicken\",\"productPrice\":\"665.00\",\"productQuantity\":\"1\",\"productTotal\":\"665.00\"},{\"productCode\":\"DES003\",\"productName\":\"Creme Brulee\",\"productPrice\":\"465.00\",\"productQuantity\":\"1\",\"productTotal\":\"465.00\"},{\"productCode\":\"DES002\",\"productName\":\"Molten Lava Cake\",\"productPrice\":\"475.00\",\"productQuantity\":\"1\",\"productTotal\":\"475.00\"}]', 1, 1),
 (6, 'Cash', 'Take-Away', '2018-07-15 01:42:08', 425, 488.75, 0, 489, '[{\"productCode\":\"SKU007\",\"productName\":\"Chicken Cigars\",\"productPrice\":\"425.00\",\"productQuantity\":\"1\",\"productTotal\":\"425.00\"}]', 1, 1),
 (7, 'Cash', 'Dine-In', '2018-05-15 01:42:47', 3730, 4289.5, 0, 4290, '[{\"productCode\":\"SKU001\",\"productName\":\"Grilled Calamari\",\"productPrice\":\"395.00\",\"productQuantity\":\"1\",\"productTotal\":\"395.00\"},{\"productCode\":\"SKU005\",\"productName\":\"Thai Prawn Cake\",\"productPrice\":\"625.00\",\"productQuantity\":\"1\",\"productTotal\":\"625.00\"},{\"productCode\":\"MCL003\",\"productName\":\"Tarragon Chicken\",\"productPrice\":\"625.00\",\"productQuantity\":\"1\",\"productTotal\":\"625.00\"},{\"productCode\":\"MBL003\",\"productName\":\"Beef Steak in Bearnaise Sauce\",\"productPrice\":\"925.00\",\"productQuantity\":\"1\",\"productTotal\":\"925.00\"},{\"productCode\":\"MCL004\",\"productName\":\"Morrocan Chicken\",\"productPrice\":\"665.00\",\"productQuantity\":\"1\",\"productTotal\":\"665.00\"},{\"productCode\":\"DES005\",\"productName\":\"Peanut Butter &amp; Chocolate Mousse\",\"productPrice\":\"495.00\",\"productQuantity\":\"1\",\"productTotal\":\"495.00\"}]', 0, 1);
-
+*/
 INSERT INTO `products` (`skuID`, `productID`, `productname`, `productprice`, `cat_catID`, `description`) VALUES
 (1, 'APT001', 'Grilled Calamari', '395', 2, ''),
 (2, 'APT002', 'Chilli Garlic Prawns', '625', 2, ''),
@@ -34,11 +34,11 @@ INSERT INTO `products` (`skuID`, `productID`, `productname`, `productprice`, `ca
 (4, 'APT004', 'Artichoke and Spinach Dip', '510', 2, ''),
 (5, 'APT005', 'Thai Prawn Cake', '625', 2, ''),
 (6, 'APT006', 'Fried Calamari', '395', 2, ''),
-(7, 'DES001', 'Italian Bread & Butter Pudding', '490', 4, ''),
+(7, 'DES001', 'Italian Bread and Butter Pudding', '490', 4, ''),
 (8, 'DES002', 'Molten Lava Cake', '475', 4, ''),
 (9, 'DES003', 'Creme Brulee', '465', 4, ''),
 (10, 'DES004', 'Tiramisu', '485', 4, ''),
-(11, 'DES005', 'Peanut Butter & Chocolate Mousse', '495', 4, ''),
+(11, 'DES005', 'Peanut Butter and Chocolate Mousse', '495', 4, ''),
 (12, 'MCL001', 'Italian Parmesan Crusted Chicken', '625', 3, ''),
 (13, 'MCL002', 'Stuffed Chicken', '645', 3, ''),
 (14, 'MCL003', 'Tarragon Chicken', '625', 3, ''),
@@ -50,4 +50,14 @@ INSERT INTO `products` (`skuID`, `productID`, `productname`, `productprice`, `ca
 (20, 'MBL004', 'Beef Steak in Mustard Sauce', '855', 3, ''),
 (21, 'DES006', 'Ras Malai', '250', 4, ''),
 (22, 'MCL006', 'Chicken Manchurian', '525', 3, ''),
-(23, 'MCL007', 'Chicken Fajita', '412', 3, '');
+(23, 'MCL007', 'Chicken Fajita', '412', 3, ''),
+
+(24, 'SAN001', 'Grilled Cheese Sandwich', '401', 5, ''),
+(25, 'SAN002', 'Club Sandwich', '519', 5, ''),
+(26, 'SAN003', 'Chicken Cheese Sandwich', '479', 5, ''),
+(27, 'BUR001', 'Zinger Burger', '555', 6, ''),
+(28, 'BUR002', 'Cheese Burger', '495', 6, ''),
+(29, 'BUR003', 'Quarter Pounder', '515', 6, ''),
+(30, 'NOD001', 'Chicken Alfredo Noodle', '325', 7, ''),
+(31, 'NOD002', 'Beef Bolognese Noodle', '365', 7, ''),
+(32, 'NOD003', 'Pad Thai Noodle', '435', 7, '');
